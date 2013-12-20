@@ -65,7 +65,9 @@ function annoLaunch(pagenum,type){
 	}
 
 	if (type == 'update'){		
-		jQuery(function ($) {	    
+		jQuery(function ($) {
+			// clear annotations
+			$('#right_pane').data('annotator').plugins['Store'].annotations = [];	    
 		    $('#right_pane').data('annotator').plugins['Store'].options.loadFromSearch.uri = uri;
 		    $('#right_pane').data('annotator').plugins['Store'].options.annotationData.uri = uri;		    
 		    $('#right_pane').data('annotator').plugins['Store'].loadAnnotationsFromSearch({		    	
