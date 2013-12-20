@@ -1,0 +1,73 @@
+/* textAnalysis */
+#left_pane_header {
+  width:50%;
+  float:left;
+}
+
+#right_pane_header {
+  width:50%;
+  float:left;
+}
+
+
+#left_pane {
+  width:50%;
+  float:left;
+}
+
+#left_pane img{
+  max-width:100%;
+  max-height:100%;  
+}
+
+#image_container{
+  width:100%;
+  height:100%;
+}
+
+#right_pane{
+  width:50%;
+  float:left;  
+}
+
+#wrapper{
+  width:90%;
+  max-width:2000px;
+  float:center;
+  margin:auto;
+}
+
+.row {
+  width:100%;
+  clear:both;
+}
+
+#text_pages img{
+  cursor:pointer;
+  margin-right:5px;
+}
+
+/*Sidebar*/
+
+#sidebar{
+  background-color:black;
+  color:#999999;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
