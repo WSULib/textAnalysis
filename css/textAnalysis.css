@@ -1,3 +1,9 @@
+html, body{
+  height:100%;
+  font-family: Trebuchet MS, Tahoma, Verdana, Arial, sans-serif;
+  margin:0px;
+}
+
 /* textAnalysis */
 #left_pane_header {
   width:50%;
@@ -12,7 +18,7 @@
 
 #left_pane {
   width:50%;
-  float:left;
+  float:left;  
 }
 
 #left_pane img{
@@ -30,29 +36,49 @@
   float:left;  
 }
 
-#wrapper{
+#page-content-wrapper{
   width:90%;
   max-width:2000px;
-  float:center;
-  margin:auto;
+  float:left;
+  margin:auto auto auto 180px;
+  min-width:767px;
 }
 
 .row {
   width:100%;
-  clear:both;
+  clear:both;  
 }
 
-#text_pages img{
+#page-content{
+  width:80%;
+}
+
+/*Sidebar*/
+#sidebar {  
+  height:100%;
+  width:150px;
+  /*float:left;*/
+  margin:auto;
+  background-color:black;
+  color:#999999;
+  margin-right:10px;
+  padding:10px;
+  position:fixed;
+
+}
+
+#page_thumbs{
+  list-style:none;
+  -webkit-padding-start:7px;
+  overflow-y:auto;
+
+}
+
+#page_thumbs img{
   cursor:pointer;
   margin-right:5px;
 }
 
-/*Sidebar*/
-
-#sidebar{
-  background-color:black;
-  color:#999999;
-}
 
 
 

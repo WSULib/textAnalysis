@@ -34,15 +34,13 @@
       <!-- Sidebar -->
       <div id="sidebar">
         <h3>textSuite</h3>
-        <ul></ul>
+        <ul id="page_thumbs"></ul>
       </div>
           
       <!-- Page content -->
       <div id="page-content-wrapper">
         <div class="content-header"> 
-          <div class="row">
-            <div id="text_pages">              
-            </div>
+          <div class="row">            
           </div> 
           <div class="row">
             <div id="left_pane_header">
@@ -50,8 +48,8 @@
               <button>text</button>
             </div>
             <div id="right_pane_header">
-              <button>analysis</button>
               <button>annotation</button>
+              <button>analysis</button>              
             </div>
           </div>
 
@@ -62,7 +60,7 @@
           <div class="row">
             <div id="left_pane">
               <div id="image_container">
-                <img src="http://silo.lib.wayne.edu/fedora/objects/yellowwallpaper:images/datastreams/IMAGE_1/content"/>
+                <img src=""/>
               </div>
             </div>
             <div id="right_pane">
