@@ -38,6 +38,13 @@ function launch(PID, pagenum){
 
 	// resize page thumbs
 	resizePageThumbs();
+
+	//update page number	
+	$("#cpage").html("Page "+pagenum);
+
+	// RUN FULLTEXT ANALYSIS IN BACKGROUND
+	// run collocations
+	fulltextAnalysis();
 	
 }
 
@@ -49,6 +56,9 @@ function updatePage(pagenum){
 	insertImage(pagenum);
 	// swap out text
 	insertTextAnnotate(pagenum);
+
+	//update page number
+	$("#cpage").html("Page "+pagenum);
 }
 
 function annoLaunch(pagenum,type){
@@ -110,6 +120,7 @@ function insertTextAnnotate(pagenum){
 // swap out image
 function insertImage(pagenum){
 	$("#image_container img").attr('src','http://silo.lib.wayne.edu/fedora/objects/'+textMeta.PIDsuffix+':images/datastreams/IMAGE_'+pagenum+'/content');
+	resizePageImage();	
 }
 
 // fire Annotations
@@ -133,7 +144,8 @@ function fireAnalysis(){
 //////////////////////////////////////////////////////////////////////
 
 function stringSearch(){
-	// http://silo.lib.wayne.edu/WSUAPI-dev/?functions[]=eTextSearch&ItemID=yellowwallpaper&search_term=%22chintz%22
+
+	// iterate through search terms, seperated by commas from input form
 
 	var solrParams = new Object();
 	solrParams.q = $("#search_string").val();
@@ -151,7 +163,7 @@ function stringSearch(){
 	//pass solr parameters os stringify-ed JSON, accepted by Python API as dicitonary
 	solrParamsString = JSON.stringify(solrParams);	
 	// Calls API functions	
-	var APIcallURL = "http://silo.lib.wayne.edu/WSUAPI-dev?functions[]=eTextSearch&solrParams="+solrParamsString;
+	var APIcallURL = "http://silo.lib.wayne.edu/WSUAPI?functions[]=eTextSearch&solrParams="+solrParamsString;
 
 	$.ajax({          
 	  url: APIcallURL,      
@@ -205,8 +217,9 @@ function paintWordFreq(){
 		  fontSize: '14',
 		  fontName: 'Arial',
 		  height: 500,
+		  width: 500,
 		  legend: 'none',
-		  // chartArea: {'width': '90%', 'height': '60%', top: '60', left: '90'},
+		  chartArea: {'width': '90%', 'height': '60%', top: '60', left: '90'},
 		  // curveType: 'function'
 		};
 
@@ -216,6 +229,9 @@ function paintWordFreq(){
 }
 
 function paintWordFreq_Update(){
+	// hide
+	$("#stringSearch_results").css('display','none');
+
 	// Initiate data table    
 	var data = new google.visualization.DataTable();
 	// Set columns
@@ -265,10 +281,30 @@ function paintWordFreq_Update(){
 	  data.addRow([ 
 	    JSONobject[i]['page'],JSONobject[i]['count']
       ]);
-	}	
+	}
+
 	Charts.Handles.stringSearch_lineGraph.draw(data, Charts.Options.stringSearch_lineGraph);
+	$("#stringSearch_results").fadeIn();
 }
 
+// fulltextAnalysis
+function fulltextAnalysis(){
+	var analysisURL = "http://silo.lib.wayne.edu/WSUAPI-dev/projects/textAnalysis?text_location=http://silo.lib.wayne.edu/fedora/objects/"+textMeta.PIDsuffix+":fullbook/datastreams/HTML_FULL/content";	
+	$.ajax({
+		url: analysisURL,
+		success: successCall,
+		error: errorCall		
+	});
+
+	function successCall(response){
+		console.log("fullbook analysis:",response);
+		analysisBlob.fullbookAnalysis = response;
+		$("#text_collocations_results").html(response.textAnalysis_results);
+	}
+	function errorCall(response){
+		console.log(response);
+	}
+}
 
 
 
@@ -284,7 +320,7 @@ $(window).resize(function() {
 
 function resizePageImage(){
 	$("#image_container").css({
-    	'height':($(window).height() )
+    	'height':( $(window).height() - 120 )
     }); 
 }
 
@@ -297,6 +333,7 @@ function resizePageThumbs(){
 
 // UTILITIES
 
+//natural language sorter
 Array.prototype.alphanumSort = function(caseInsensitive) {
   for (var z = 0, t; t = this[z]; z++) {
     this[z] = []; var x = 0, y = -1, n = 0, i, j;
@@ -331,7 +368,28 @@ Array.prototype.alphanumSort = function(caseInsensitive) {
     this[z] = this[z].join("");
 }
 
-
+// font resizer
+// increase / decrease font size ("delta" as "increase" or "decrease")
+// works for both OCR overlays and plain text display
+function fontResize(delta){
+    // font-size conversion array
+    var conv_array = [ '6px', 'xx-small', 'x-small', 'small', 'medium', 'large', 'x-large', 'xx-large', '72px', '90px' ];
+    
+    var font_tags = $('#right_pane_HTML font');        
+    font_tags.each(function () {  //each tag is"this"      
+	    var font_handle = $(this); //removed children, as it is "this"            
+	    var fsize = font_handle[0].style.fontSize;        
+	    var fsize_index = conv_array.indexOf(fsize);        
+	    if (delta == "increase"){
+	        fsize_index += 1;
+	        font_handle.css('font-size', conv_array[fsize_index])
+	    }
+	    if (delta == "decrease"){
+	        fsize_index -= 1;
+	        font_handle.css('font-size', conv_array[fsize_index])
+	    }                
+    });
+}
 
 
 
