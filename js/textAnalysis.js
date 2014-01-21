@@ -8,6 +8,9 @@ Charts.Options = new Object();
 // on page launch
 function launch(PID, pagenum){
 
+	// set cPage
+	textMeta.cPage = 1;
+
 	// text ID sufffix
 	var PIDsuffix = PID.split(":")[1];
 	textMeta.PID = PID;
@@ -26,9 +29,13 @@ function launch(PID, pagenum){
 	   	for (var i=0; i<textMeta.structMeta.XMLtoJSON.ebook_item.dimensions.leafs; i++){	   		
 	   		$("#page_thumbs").append("<li><img onclick='updatePage("+(i+1)+"); return false;' src='http://silo.lib.wayne.edu/fedora/objects/"+PIDsuffix+":thumbs/datastreams/THUMB_"+(i+1)+"/content'/></li>");
 	   	}
+
+	   	// //set nav pages
+		setNav();
+
 	   }
 	   
-	});
+	});	
 
 	// initialize text	
 	insertTextAnnotate('launch');
@@ -40,7 +47,7 @@ function launch(PID, pagenum){
 	resizePageThumbs();
 
 	//update page number	
-	$("#cpage").html("Page "+pagenum);
+	$("#cpage").html("Page "+pagenum);	
 
 	// RUN FULLTEXT ANALYSIS IN BACKGROUND
 	// run collocations
@@ -49,6 +56,8 @@ function launch(PID, pagenum){
 }
 
 function updatePage(pagenum){
+	textMeta.cPage = pagenum;
+
 	// hide analysis, fade in annotations
 	$("#analysis_layer").hide();
 	$("#annotation_layer").fadeIn();
@@ -59,6 +68,10 @@ function updatePage(pagenum){
 
 	//update page number
 	$("#cpage").html("Page "+pagenum);
+
+	// set nav pages
+	setNav();
+	
 }
 
 function annoLaunch(pagenum,type){
@@ -67,8 +80,8 @@ function annoLaunch(pagenum,type){
 
 	if (type == 'launch'){
 		jQuery(function ($) {	    
-		    $('.right_pane').annotator();
-		    $('.right_pane').annotator('addPlugin', 'Store', {
+		    $('#image_text .right_pane').annotator();
+		    $('#image_text .right_pane').annotator('addPlugin', 'Store', {
 		    	prefix: 'http://silo.lib.wayne.edu/annotations',
 		    	annotationData: {
 		    		'uri':uri
@@ -84,10 +97,10 @@ function annoLaunch(pagenum,type){
 	if (type == 'update'){		
 		jQuery(function ($) {
 			// clear annotations
-			$('.right_pane').data('annotator').plugins['Store'].annotations = [];	    
-		    $('.right_pane').data('annotator').plugins['Store'].options.loadFromSearch.uri = uri;
-		    $('.right_pane').data('annotator').plugins['Store'].options.annotationData.uri = uri;		    
-		    $('.right_pane').data('annotator').plugins['Store'].loadAnnotationsFromSearch({		    	
+			$('#image_text .right_pane').data('annotator').plugins['Store'].annotations = [];	    
+		    $('#image_text .right_pane').data('annotator').plugins['Store'].options.loadFromSearch.uri = uri;
+		    $('#image_text .right_pane').data('annotator').plugins['Store'].options.annotationData.uri = uri;		    
+		    $('#image_text .right_pane').data('annotator').plugins['Store'].loadAnnotationsFromSearch({		    	
 		    	'uri':uri
 		    });		    
 		});
@@ -145,8 +158,11 @@ function fireAnalysis(){
 
 function stringSearch(){
 
-	// iterate through search terms, seperated by commas from input form
+	analysisBlob.search_string = $("#search_string").val();
+	var search_terms = analysisBlob.search_string.split(",");
+	console.log(search_terms);
 
+	// iterate through search terms, seperated by commas from input form
 	var solrParams = new Object();
 	solrParams.q = $("#search_string").val();
 	solrParams['fq[]'] = [
@@ -172,16 +188,17 @@ function stringSearch(){
 	  error: callError
 	});
 
-	function callSuccess(response){
-		console.log(response);
+	function callSuccess(response){		
 		analysisBlob.stringSearch = response.eTextSearch;
 		paintWordFreq_Update();
+		wordAnalysis();		
 	}
 	function callError(response){
 		console.log(response);
 	}
 
 }
+
 
 // function to create Google Chart of StringPerPage
 function paintWordFreq(){
@@ -262,18 +279,6 @@ function paintWordFreq_Update(){
 		JSONobject[(pageNum - 1)]['count'] = pageSnippets.OCR_text.length;	
 	}
 
-	// // iterate through pages, creates JSONobject that is ONLY highlights
-	// var snippet_keys = Object.keys(analysisBlob.stringSearch.highlighting);
-	// snippet_keys.alphanumSort();
-	// for (var i = 0; i < snippet_keys.length; i++) {
-	// 	var pageSnippets = analysisBlob.stringSearch.highlighting[snippet_keys[i]];
-	// 	var dataRow = new Object();
-	// 	dataRow['page'] = snippet_keys[i];
-	// 	dataRow['count'] = pageSnippets.OCR_text.length;
-	// 	// dataRow[snippet_keys[i]] = pageSnippets.OCR_text.length;
-	// 	JSONobject.push(dataRow);
-	// }
-
 	console.log("After insertions",JSONobject);
 	 
 	// Add rows to data object
@@ -287,25 +292,165 @@ function paintWordFreq_Update(){
 	$("#stringSearch_results").fadeIn();
 }
 
-// fulltextAnalysis
-function fulltextAnalysis(){
-	var analysisURL = "http://silo.lib.wayne.edu/WSUAPI-dev/projects/textAnalysis?text_location=http://silo.lib.wayne.edu/fedora/objects/"+textMeta.PIDsuffix+":fullbook/datastreams/HTML_FULL/content";	
+// concordance
+function wordAnalysis(){
+	fireLoaders();
+
+	var wordAnalysisURL = "http://silo.lib.wayne.edu/WSUAPI-dev/projects/textAnalysis?id="+textMeta.PIDsuffix+"&type=wordAnalysis&word="+analysisBlob.search_string+"&text_location=http://silo.lib.wayne.edu/fedora/objects/"+textMeta.PIDsuffix+":fullbook/datastreams/HTML_FULL/content"
 	$.ajax({
-		url: analysisURL,
+		url: wordAnalysisURL,
+		dataType: "json",
 		success: successCall,
 		error: errorCall		
 	});
 
 	function successCall(response){
+		console.log("word analysis:",response);
+		analysisBlob.wordAnalysis = response;
+
+		// push concordances
+		$("#concordance_results").empty();
+		for (var i=0; i<analysisBlob.wordAnalysis.textAnalysis.concordance.length; i++)	{
+			var blurb = analysisBlob.wordAnalysis.textAnalysis.concordance[i]
+			blurb = blurb.replace(analysisBlob.search_string,("<span class='hl'>"+analysisBlob.search_string+"</span>"));			
+			$("#concordance_results").append("<li>..."+blurb+"...</li>")
+		}	
+	}
+	function errorCall(response){
+		console.log(response);
+	}
+
+
+}
+
+function fireLoaders(){
+	$("#concordance_results").append('<img src="img/loader.gif"/>');
+}
+
+
+
+// fulltextAnalysis
+function fulltextAnalysis(){
+	var analysisURL = "http://silo.lib.wayne.edu/WSUAPI-dev/projects/textAnalysis?id="+textMeta.PIDsuffix+"&type=fullbookAnalysis&text_location=http://silo.lib.wayne.edu/fedora/objects/"+textMeta.PIDsuffix+":fullbook/datastreams/HTML_FULL/content";	
+	$.ajax({
+		url: analysisURL,
+		dataType: "json",
+		success: successCall,
+		error: errorCall		
+	});
+
+	function successCall(response){
+		$("#metrics_results_loader").hide();
+		$("#metrics_results").fadeIn();
 		console.log("fullbook analysis:",response);
 		analysisBlob.fullbookAnalysis = response;
-		$("#text_collocations_results").html(response.textAnalysis_results);
+		
+		// collocations
+		$("#text_collocations_results").html(analysisBlob.fullbookAnalysis.textAnalysis.collocations);
+		
+		// simple metrics
+		var simple_metrics =analysisBlob.fullbookAnalysis.textAnalysis.simple_metrics
+		$("#totalWordCount").html(simple_metrics.totalWordCount);
+		$("#totalWordCount_sans_stopwords").html(simple_metrics.totalWordCount_sans_stopwords);
+		$("#uniqueWords").html(simple_metrics.uniqueWords);
+		$("#lexicalDiversity").html(simple_metrics.lexicalDiversity);
+		$("#lexicalDiversity_sans_stopwords").html(simple_metrics.lexicalDiversity_sans_stopwords);
+		$("#totalSentences").html(simple_metrics.totalSentences);
+		$("#longestSentence").html("<ul><li><strong>Word Count:</strong> "+simple_metrics.longestSentence.length+"</li><li>"+simple_metrics.longestSentence.text+"</li></ul>");
+		$("#shortestSentence").html("<ul><li><strong>Word Count:</strong> "+simple_metrics.shortestSentence.length+"</li><li>"+simple_metrics.shortestSentence.text+"</li></ul>");
+		$("#avgSentenceLength").html(simple_metrics.avgSentenceLength);
+
+		//frequent, long words table
+		for (var i=0; i<simple_metrics.freqLongWords.length; i++)	{
+			$("#freq_long_words span").append(simple_metrics.freqLongWords[i]+"; ");
+		}
+
+		//unique word table
+		for (var i=0; i<simple_metrics.uniqueWordsList.length; i++)	{
+			$("#unique_words table").append("<tr><td>"+simple_metrics.uniqueWordsList[i].text+"</td><td>"+simple_metrics.uniqueWordsList[i].count+"</td></tr>");
+		}
+		uniqueWordCounts_update();
+
 	}
 	function errorCall(response){
 		console.log(response);
 	}
 }
 
+// function to create distribution chart of top 15 unique words
+function uniqueWordCounts(){	
+
+	google.load("visualization", "1", {packages:["corechart"]});	
+	google.setOnLoadCallback(drawChart);	
+	function drawChart() {		
+
+		var data = google.visualization.arrayToDataTable([
+          ['Word', 'Count'],
+          ['abba',  0]
+        ]);
+
+		Charts.Options.uniqueWordCounts = {
+		  title: "Top 15 Unique Word Counts",
+		  titleTextStyle: {color: '#333'},
+		  vAxis: {title: 'Count',  
+		          titleTextStyle: {color: '#333', italic: 'false', bold: 'true'},
+		          textStyle: {fontSize: '12'},
+		          minValue:0,
+		          format:"#"
+		      },
+		  hAxis: {title: 'Word',  
+		          titleTextStyle: {color: '#333', italic: 'false', bold: 'true'}, 
+		          textStyle: {fontSize: '12'},
+		          slantedText: 'true',
+		          slantedTextAngle: '65',
+		          gridlines: {color: '#aaa', count: '5'}, 
+		          minorGridlines: {color: '#eee', count: '4'}
+		      },
+		  pointSize: '3',
+		  fontSize: '14',
+		  fontName: 'Arial',
+		  height: 500,
+		  width: 500,
+		  legend: 'none',
+		  // chartArea: {'width': '90%', 'height': '60%', top: '60', left: '90'},
+		  // curveType: 'function'
+		};
+
+		Charts.Handles.uniqueWordCounts = new google.visualization.LineChart(document.getElementById('uniqueWordCounts'));
+		Charts.Handles.uniqueWordCounts.draw(data, Charts.Options.uniqueWordCounts);
+	}
+}
+
+// function to create distribution chart of top 15 unique words
+function uniqueWordCounts_update(){		
+
+	// Initiate data table    
+	var data = new google.visualization.DataTable();
+	
+	// Set columns
+	data.addColumn('string','word');
+	data.addColumn('number','count');
+
+	// create object to push to data
+	var JSONobject = [];
+
+	// create data points for each page
+	for (var i=0; i < analysisBlob.fullbookAnalysis.textAnalysis.simple_metrics.uniqueWordsList.length; i++) {		
+		var dataRow = new Object();		
+		dataRow['word'] = analysisBlob.fullbookAnalysis.textAnalysis.simple_metrics.uniqueWordsList[i].text;
+		dataRow['count'] = analysisBlob.fullbookAnalysis.textAnalysis.simple_metrics.uniqueWordsList[i].count;
+		JSONobject.push(dataRow);
+	}	
+	 
+	// Add rows to data object
+	for (var i=0; i<JSONobject.length; i++){
+	  data.addRow([ 
+	    JSONobject[i]['word'],JSONobject[i]['count']
+      ]);
+	}
+
+	Charts.Handles.uniqueWordCounts.draw(data, Charts.Options.uniqueWordCounts);	
+}
 
 
 
@@ -391,8 +536,26 @@ function fontResize(delta){
     });
 }
 
-
-
+//set nav
+function setNav(){
+	var prev_page = null;
+	var next_page = null;	
+	if (textMeta.cPage == 1) { 					
+		prev_page = 1; 
+		next_page = textMeta.cPage + 1;
+	}	
+	else if (textMeta.cPage == textMeta.structMeta.XMLtoJSON.ebook_item.dimensions.leafs) {				
+		prev_page = textMeta.cPage - 1; 
+		next_page = textMeta.cPage;
+	}
+	else { 		
+		prev_page = textMeta.cPage - 1; 
+		next_page = textMeta.cPage + 1; 
+	}			
+	$("#prev_page").attr('onclick',"updatePage("+prev_page+"); return false;");
+	$("#next_page").attr('onclick',"updatePage("+next_page+"); return false;");
+}
+	
 
 
 

@@ -1,10 +1,20 @@
 html, body{
   height:100%;
-  font-family: Trebuchet MS, Tahoma, Verdana, Arial, sans-serif;
+  /*font-family: Trebuchet MS, Tahoma, Verdana, Arial, sans-serif;*/
+  font-family: Cambria, Arial, sans-serif;
+  /*font-size: small;*/
   margin:0px;
 }
 
-/*Main Area*/
+/*notes
+
+if smaller than
+  - hide unique words table, show graph only
+  - hide sidebar?
+
+*/
+
+
 
 #page-content-wrapper{
   width:90%;
@@ -114,15 +124,52 @@ html, body{
   display:none;
 }
 
-#html_tools span{
+#status_tools .right_pane{
+  text-align:right;
+}
+
+.status_tools {
+  float:right;
+  margin:auto 10px auto auto;
+}
+
+.status_tools span{
   cursor:pointer;
   color:pink;
 }
 
+#analysis_layer ul{
+  list-style:none;
+}
 
+.hl{
+  background-color:yellow;
+}
 
+#metrics_results{
+  display:none;
+}
 
+#unique_words table{
+  border-collapse:collapse;
+  margin-top:5px;
+  float:left;
+}
 
+#unique_words table td{
+  border: 1px solid black;
+  padding:5px;
+}
+
+#uniqueWordCounts{
+  float:right;
+  margin:auto;
+}
+
+#concordance_results{
+  max-height:300px;
+  overflow-y:scroll;
+}
 
 
 

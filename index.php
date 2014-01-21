@@ -43,11 +43,7 @@
       </div>
 
       <div class="content-header">          
-          <div class="row">
-            <!-- <div id="left_pane_header">
-              <button>images</button>
-              <button>text</button>
-            </div> -->
+          <div class="row">           
             <div id="left_pane_header">
               <a href="#" onclick="fireAnno(); return false;">annotation</a>
               <a href="#" onclick="fireAnalysis(); return false;">analysis</a>              
@@ -62,19 +58,26 @@
         <!-- Keep all page content within the page-content inset div! -->
         <div class="page-content">
           <div id="annotation_layer">
-            <div class="row">
-              <h2>Image Annotations - <span id="cpage"></span></h2>              
+            <div class="row" id="status_tools">
+              <div class="left_pane">
+                <h2>Annotations - <span id="cpage"></span></h2>                            
+              </div>
+              <div class="right_pane">
+                <div class="status_tools" id="html_tools">
+                  <p>Font size: <span onclick="fontResize('increase'); return false;">increase</span> / <span onclick="fontResize('decrease'); return false;">decrease</span></p>
+                </div>
+                <div class="status_tools" id="nav_tools">                  
+                  <p>Page Navigation: <span id="prev_page">previous</span> / <span id="next_page">next</span></p>
+                </div>
+              </div>
             </div>
-            <div class="row">
+            <div class="row" id="image_text">
               <div class="left_pane">
                 <div id="image_container">
                   <img src=""/>
                 </div>
               </div>
-              <div class="right_pane">
-                <div id="html_tools">
-                  <p>Font size: <span onclick="fontResize('increase'); return false;">increase</span> / <span onclick="fontResize('decrease'); return false;">decrease</span></p>
-                </div>
+              <div class="right_pane">                
                 <div id="right_pane_HTML"></div>
               </div>            
             </div>
@@ -94,13 +97,67 @@
                 <div id="stringSearch_results">
                   <div id="stringSearch_lineGraph"><script type="text/javascript">paintWordFreq();</script></div>                                                  
                 </div>
+                <div id="nltk_results">
+                  <p><strong>Concordance Instances:</strong><p>
+                  <ul id="concordance_results"></ul>
+                </div>
               </div>
               <div class="right_pane">
                 <h3>Text Metrics and Analysis</h3>
-                <div id="text_collocations">
-                  <p>Collocations:</p>
-                  <div id="text_collocations_results"><img src="img/loader.gif"/></div>
-                </div>
+                <img id="metrics_results_loader" src="img/loader.gif"/>
+                <div id="metrics_results">
+                  <ul>
+                    <li><strong>Total Word Count: </strong><span id="totalWordCount"></span></li>
+                    <li><strong>Total Word Count (sans English stopwords): </strong><span id="totalWordCount_sans_stopwords"></span></li>
+                    <li><strong>Unique Word Count: </strong><span id="uniqueWords"></span></li>
+                    <li><strong>Lexical Density (Total Words Count / Unique Word Count): </strong><span id="lexicalDiversity"></span><li>
+                    <li><strong>Lexical Density (sans English stopwords): </strong><span id="lexicalDiversity_sans_stopwords"></span></li>
+                    <li><strong>Total Sentences: </strong><span id="totalSentences"></span></li>
+                    <li><strong>Longest Sentence: </strong><span id="longestSentence"></span></li>
+                    <li><strong>Shortest Sentence: </strong><span id="shortestSentence"></span></li>
+                    <li><strong>Average Sentence Length: </strong><span id="avgSentenceLength"></span></li>                  
+                  </ul>
+                  <!--collocations-->
+                  <div id="text_collocations">
+                    <ul>
+                      <li><strong>Collocations:</strong></li>
+                      <li>
+                        <ul>
+                          <li><div id="text_collocations_results"></div></li>
+                        </ul>
+                      </li>
+                    </ul>                    
+                  </div>
+                  <!-- frequent, long words-->
+                  <div id="freq_long_words">
+                    <ul>
+                      <li><strong>Frequent Words: length > 5, frequency > ?</strong></li>
+                      <li>
+                        <ul>
+                          <li><span></li>
+                        </ul>
+                      </li>                      
+                    </ul>
+                  </div>
+                  <!-- unique words-->
+                  <div id="unique_words">
+                    <ul>
+                      <li><strong>Unique Words:</strong></li>
+                      <li>
+                        <ul>
+                          <li>
+                            <table></table>
+                            <div id="uniqueWordCounts"><script type="text/javascript">uniqueWordCounts();</script></div>                            
+                          </li>
+                        </ul>
+                      </li>                      
+                    </ul>
+                  </div>
+
+                </div> <!-- closes results -->
+                <!-- TO ADD:
+                  Frequency and Top Words
+                -->
               </div>
             </div>
           </div>
