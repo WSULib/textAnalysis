@@ -4,6 +4,8 @@ var analysisBlob = new Object();
 var Charts = new Object();
 Charts.Handles = new Object();
 Charts.Options = new Object();
+// set cookie
+var userCook = new Object();
 
 // on page launch
 function launch(PID, pagenum){
@@ -27,7 +29,7 @@ function launch(PID, pagenum){
 	   	
 	   	// push page thumbnails to page
 	   	for (var i=0; i<textMeta.structMeta.XMLtoJSON.ebook_item.dimensions.leafs; i++){	   		
-	   		$("#page_thumbs").append("<li><img onclick='updatePage("+(i+1)+"); return false;' src='http://silo.lib.wayne.edu/fedora/objects/"+PIDsuffix+":thumbs/datastreams/THUMB_"+(i+1)+"/content'/></li>");
+	   		$("#page_thumbs").append("<li>Page "+(i+1)+" <img onclick='updatePage("+(i+1)+"); return false;' src='http://silo.lib.wayne.edu/fedora/objects/"+PIDsuffix+":thumbs/datastreams/THUMB_"+(i+1)+"/content'/></li>");
 	   	}
 
 	   	// //set nav pages
@@ -52,6 +54,9 @@ function launch(PID, pagenum){
 	// RUN FULLTEXT ANALYSIS IN BACKGROUND
 	// run collocations
 	fulltextAnalysis();
+	
+	userCook.username = "horseface";
+	userCook.fontPrefIndex = 5;
 	
 }
 
@@ -125,6 +130,8 @@ function insertTextAnnotate(pagenum){
 	   url: url,
 	   success: function(response){	    
 	    $("#right_pane_HTML").html(response);
+	    // snap to user text preference
+	    fontResize('pageload');
 	    annoLaunch(pagenum,type);
 	   }	   
 	});
@@ -156,47 +163,107 @@ function fireAnalysis(){
 // Text Analysis
 //////////////////////////////////////////////////////////////////////
 
+// OLD VERSION, WORKING
+// function stringSearch(){
+
+// 	analysisBlob.search_string = $("#search_string").val();
+// 	var search_terms = analysisBlob.search_string.split(",");	
+// 	console.log("Search terms",search_terms);
+
+
+// 	// iterate through search terms, seperated by commas from input form
+// 	for (var i=0; i<search_terms.length; i++){
+// 		var solrParams = new Object();
+// 		solrParams.q = search_terms[i];
+// 		solrParams['fq[]'] = [
+// 			"ItemID:"+textMeta.structMeta.XMLtoJSON.ebook_item.item_ID
+// 			];
+// 		solrParams.rows = 1000;
+// 		solrParams.sort = "page_num asc";
+// 		solrParams.hl = "true";
+// 		solrParams['hl.fl'] = "OCR_text";
+// 		solrParams['hl.snippets'] = 1000;
+// 		solrParams['hl.fragmenter'] = 'gap';
+// 		solrParams['hl.fragsize'] = 70;
+
+// 		//pass solr parameters os stringify-ed JSON, accepted by Python API as dicitonary
+// 		solrParamsString = JSON.stringify(solrParams);	
+// 		// Calls API functions	
+// 		var APIcallURL = "http://silo.lib.wayne.edu/WSUAPI?functions[]=eTextSearch&solrParams="+solrParamsString;
+
+// 		$.ajax({          
+// 		  url: APIcallURL,      
+// 		  dataType: 'json',	  	    
+// 		  success: callSuccess,
+// 		  error: callError
+// 		});
+
+// 		function callSuccess(response){		
+// 			analysisBlob.stringSearch = response.eTextSearch;
+// 			paintWordFreq_Update();
+// 			wordAnalysis();		
+// 		}
+// 		function callError(response){
+// 			console.log(response);
+// 		}	
+// 	}
+// }
+
 function stringSearch(){
 
 	analysisBlob.search_string = $("#search_string").val();
-	var search_terms = analysisBlob.search_string.split(",");
-	console.log(search_terms);
+	var search_terms = analysisBlob.search_string.split(",");	
+	analysisBlob.search_terms = search_terms;	
 
-	// iterate through search terms, seperated by commas from input form
-	var solrParams = new Object();
-	solrParams.q = $("#search_string").val();
-	solrParams['fq[]'] = [
-		"ItemID:"+textMeta.structMeta.XMLtoJSON.ebook_item.item_ID
-		];
-	solrParams.rows = 1000;
-	solrParams.sort = "page_num asc";
-	solrParams.hl = "true";
-	solrParams['hl.fl'] = "OCR_text";
-	solrParams['hl.snippets'] = 1000;
-	solrParams['hl.fragmenter'] = 'gap';
-	solrParams['hl.fragsize'] = 70;
+	// create array of results
+	analysisBlob.stringSearches = [];
 
-	//pass solr parameters os stringify-ed JSON, accepted by Python API as dicitonary
-	solrParamsString = JSON.stringify(solrParams);	
-	// Calls API functions	
-	var APIcallURL = "http://silo.lib.wayne.edu/WSUAPI?functions[]=eTextSearch&solrParams="+solrParamsString;
+	// counter
+	var search_count = 0;
 
-	$.ajax({          
-	  url: APIcallURL,      
-	  dataType: 'json',	  	    
-	  success: callSuccess,
-	  error: callError
-	});
+	// function getHighlights(search_term){
+	for (var i=0; i<search_terms.length; i++){
+		var search_term = search_terms[i];
+		console.log(search_term);
+		var solrParams = new Object();
+		solrParams.q = search_term;
+		solrParams['fq[]'] = [
+			"ItemID:"+textMeta.structMeta.XMLtoJSON.ebook_item.item_ID
+			];
+		solrParams.rows = 1000;
+		solrParams.sort = "page_num asc";
+		solrParams.hl = "true";
+		solrParams['hl.fl'] = "OCR_text";
+		solrParams['hl.snippets'] = 1000;
+		solrParams['hl.fragmenter'] = 'gap';
+		solrParams['hl.fragsize'] = 70;
 
-	function callSuccess(response){		
-		analysisBlob.stringSearch = response.eTextSearch;
-		paintWordFreq_Update();
-		wordAnalysis();		
+		//pass solr parameters os stringify-ed JSON, accepted by Python API as dicitonary
+		solrParamsString = JSON.stringify(solrParams);	
+		// Calls API functions	
+		var APIcallURL = "http://silo.lib.wayne.edu/WSUAPI?functions[]=eTextSearch&solrParams="+solrParamsString;
+
+		$.ajax({          
+		  url: APIcallURL,      
+		  dataType: 'json',	  	    
+		  success: callSuccess,
+		  error: callError
+		});
+
+		function callSuccess(response){
+			analysisBlob.stringSearches.push(response.eTextSearch);
+			search_count++;
+			console.log("total / current:",analysisBlob.stringSearches.length,search_count);
+			if (search_count === search_terms.length) {
+				paintWordFreq_Update();
+				wordAnalysis();
+			}				
+		}
+
+		function callError(response){
+			console.log(response);
+		}
 	}
-	function callError(response){
-		console.log(response);
-	}
-
 }
 
 
@@ -230,13 +297,13 @@ function paintWordFreq(){
 		          gridlines: {color: '#aaa', count: '5'}, 
 		          minorGridlines: {color: '#eee', count: '4'}
 		      },
-		  pointSize: '3',
+		  pointSize: '1',
 		  fontSize: '14',
 		  fontName: 'Arial',
 		  height: 500,
-		  width: 500,
-		  legend: 'none',
+		  width: 500,		  
 		  chartArea: {'width': '90%', 'height': '60%', top: '60', left: '90'},
+		  legend:'bottom'
 		  // curveType: 'function'
 		};
 
@@ -245,82 +312,201 @@ function paintWordFreq(){
 	}
 }
 
+// OLD, WORKING VERSION
+// function paintWordFreq_Update(){
+// 	// hide
+// 	$("#stringSearch_results").css('display','none');
+
+// 	// Initiate data table    
+// 	var data = new google.visualization.DataTable();
+// 	// Set columns
+// 	data.addColumn('number','page');
+// 	data.addColumn('number','count');
+
+// 	// create object to push to data
+// 	var JSONobject = [];
+
+// 	// create data points for each page
+// 	for (var i=0; i < textMeta.structMeta.XMLtoJSON.ebook_item.dimensions.leafs; i++) {
+// 		// page name - textMeta.structMeta.XMLtoJSON.ebook_item.item_ID + i
+// 		var dataRow = new Object();
+// 		// dataRow['page'] = textMeta.structMeta.XMLtoJSON.ebook_item.item_ID+"_OCR_HTML_"+(i+1);
+// 		dataRow['page'] = (i+1);
+// 		dataRow['count'] = 0;
+// 		JSONobject.push(dataRow);
+// 	}
+
+// 	console.log("Pre highlights addition:",JSONobject);	
+	
+// 	// iterate through highlights, push to JSONobject that has all pages from text
+// 	var snippet_keys = Object.keys(analysisBlob.stringSearch.highlighting);
+// 	snippet_keys.alphanumSort();
+// 	for (var i = 0; i < snippet_keys.length; i++) {
+// 		var pageSnippets = analysisBlob.stringSearch.highlighting[snippet_keys[i]];
+// 		var pageNum = snippet_keys[i].split("_OCR_HTML_")[1];
+// 		JSONobject[(pageNum - 1)]['count'] = pageSnippets.OCR_text.length;	
+// 	}
+
+// 	console.log("After insertions",JSONobject);
+	 
+// 	// Add rows to data object
+// 	for (var i=0; i<JSONobject.length; i++){
+// 	  data.addRow([ 
+// 	    JSONobject[i]['page'],JSONobject[i]['count']
+//       ]);
+// 	}
+
+// 	Charts.Handles.stringSearch_lineGraph.draw(data, Charts.Options.stringSearch_lineGraph);
+// 	$("#stringSearch_results").fadeIn();
+// }
+
 function paintWordFreq_Update(){
 	// hide
 	$("#stringSearch_results").css('display','none');
 
 	// Initiate data table    
 	var data = new google.visualization.DataTable();
+
+	Charts.Options.stringSearch_lineGraph['width'] = 500;
+	
 	// Set columns
 	data.addColumn('number','page');
-	data.addColumn('number','count');
+	console.log("number of terms:",analysisBlob.stringSearches.length);
+	for (var i=0; i<analysisBlob.stringSearches.length; i++){
+		// generate colName
+		var colName = analysisBlob.stringSearches[i].responseHeader.params.q;		
+		console.log("Adding row header to data:",colName);
+		data.addColumn('number',colName);	
+	}	
+	console.log("Data before any rows added:",data);
 
 	// create object to push to data
 	var JSONobject = [];
 
-	// create data points for each page
+	// create empty data points for each page	
 	for (var i=0; i < textMeta.structMeta.XMLtoJSON.ebook_item.dimensions.leafs; i++) {
-		// page name - textMeta.structMeta.XMLtoJSON.ebook_item.item_ID + i
 		var dataRow = new Object();
-		// dataRow['page'] = textMeta.structMeta.XMLtoJSON.ebook_item.item_ID+"_OCR_HTML_"+(i+1);
 		dataRow['page'] = (i+1);
-		dataRow['count'] = 0;
+		for (var j=0; j<analysisBlob.stringSearches.length; j++){
+			var colName = analysisBlob.stringSearches[j].responseHeader.params.q;
+			dataRow[colName] = 0;
+		}
 		JSONobject.push(dataRow);
-	}
+	}		
 
 	console.log("Pre highlights addition:",JSONobject);	
 	
-	// iterate through highlights, push to JSONobject that has all pages from text
-	var snippet_keys = Object.keys(analysisBlob.stringSearch.highlighting);
-	snippet_keys.alphanumSort();
-	for (var i = 0; i < snippet_keys.length; i++) {
-		var pageSnippets = analysisBlob.stringSearch.highlighting[snippet_keys[i]];
-		var pageNum = snippet_keys[i].split("_OCR_HTML_")[1];
-		JSONobject[(pageNum - 1)]['count'] = pageSnippets.OCR_text.length;	
+	// iterate through search terms, then iterate through highlights, push to JSONobject that has all pages from text
+	for (var i=0; i<analysisBlob.stringSearches.length; i++){
+
+		// generate colName
+		var colName = analysisBlob.stringSearches[i].responseHeader.params.q;
+		console.log("Adding hits for:",colName);
+		var snippet_keys = Object.keys(analysisBlob.stringSearches[i].highlighting);
+		snippet_keys.alphanumSort();
+		for (var j = 0; j < snippet_keys.length; j++) {
+			var pageSnippets = analysisBlob.stringSearches[i].highlighting[snippet_keys[j]];
+			var pageNum = snippet_keys[j].split("_OCR_HTML_")[1];
+			JSONobject[(pageNum - 1)][colName] = pageSnippets.OCR_text.length;	
+		}
 	}
 
-	console.log("After insertions",JSONobject);
+	console.log("After insertions",JSONobject);	
 	 
 	// Add rows to data object
+	var all_rows = []
 	for (var i=0; i<JSONobject.length; i++){
-	  data.addRow([ 
-	    JSONobject[i]['page'],JSONobject[i]['count']
-      ]);
+		var row_array = [];		
+		var row_keys = Object.keys(JSONobject[i]);
+		// repeater val
+		for (var j=0; j<row_keys.length; j++){
+			var ckey = row_keys[j];
+			row_array.push(JSONobject[i][ckey]);
+		}
+		all_rows.push(row_array);
 	}
+
+	data.addRows(all_rows);
 
 	Charts.Handles.stringSearch_lineGraph.draw(data, Charts.Options.stringSearch_lineGraph);
 	$("#stringSearch_results").fadeIn();
 }
 
+// OLD, BASICALLY WORKING VERSION (just need to strip for each loop)
+// // concordance
+// function wordAnalysis(){
+// 	fireLoaders();
+
+// 	// for each search term, push concordance results to a list
+// 	for (var i=0; i<analysisBlob.search_terms.length; i++){
+// 		var search_term = analysisBlob.search_terms[i];
+// 		///////////////////////////////////////////////////////////////////////////////////////////
+// 		var wordAnalysisURL = "http://silo.lib.wayne.edu/WSUAPI-dev/projects/textAnalysis?id="+textMeta.PIDsuffix+"&type=wordAnalysis&word="+analysisBlob.search_string+"&text_location=http://silo.lib.wayne.edu/fedora/objects/"+textMeta.PIDsuffix+":fullbook/datastreams/HTML_FULL/content"
+// 		$.ajax({
+// 			url: wordAnalysisURL,
+// 			dataType: "json",
+// 			success: successCall,
+// 			error: errorCall		
+// 		});
+
+// 		function successCall(response){
+// 			console.log("word analysis:",response);
+// 			analysisBlob.wordAnalysis = response;
+
+// 			// push concordances
+// 			$("#concordance_results").empty();
+// 			for (var i=0; i<analysisBlob.wordAnalysis.textAnalysis.concordance.length; i++)	{
+// 				var blurb = analysisBlob.wordAnalysis.textAnalysis.concordance[i]
+// 				blurb = blurb.replace(analysisBlob.search_string,("<span class='hl'>"+analysisBlob.search_string+"</span>"));			
+// 				$("#concordance_results").append("<li>..."+blurb+"...</li>")
+// 			}	
+// 		}
+// 		function errorCall(response){
+// 			console.log(response);
+// 		}
+// 		///////////////////////////////////////////////////////////////////////////////////////////	
+// 	}
+// }
+
 // concordance
 function wordAnalysis(){
 	fireLoaders();
 
-	var wordAnalysisURL = "http://silo.lib.wayne.edu/WSUAPI-dev/projects/textAnalysis?id="+textMeta.PIDsuffix+"&type=wordAnalysis&word="+analysisBlob.search_string+"&text_location=http://silo.lib.wayne.edu/fedora/objects/"+textMeta.PIDsuffix+":fullbook/datastreams/HTML_FULL/content"
-	$.ajax({
-		url: wordAnalysisURL,
-		dataType: "json",
-		success: successCall,
-		error: errorCall		
-	});
+	console.log('running word analysis...');
 
-	function successCall(response){
-		console.log("word analysis:",response);
-		analysisBlob.wordAnalysis = response;
+	// empty previous results...
+	$("#concordance_results").empty();	
 
-		// push concordances
-		$("#concordance_results").empty();
-		for (var i=0; i<analysisBlob.wordAnalysis.textAnalysis.concordance.length; i++)	{
-			var blurb = analysisBlob.wordAnalysis.textAnalysis.concordance[i]
-			blurb = blurb.replace(analysisBlob.search_string,("<span class='hl'>"+analysisBlob.search_string+"</span>"));			
-			$("#concordance_results").append("<li>..."+blurb+"...</li>")
-		}	
+	// for each search term, push concordance results to a list
+	for (var i=0; i<analysisBlob.search_terms.length; i++){
+
+		var search_term = $.trim(analysisBlob.search_terms[i]);
+		///////////////////////////////////////////////////////////////////////////////////////////
+		var wordAnalysisURL = "http://silo.lib.wayne.edu/WSUAPI-dev/projects/textAnalysis?id="+textMeta.PIDsuffix+"&type=wordAnalysis&word="+search_term+"&text_location=http://silo.lib.wayne.edu/fedora/objects/"+textMeta.PIDsuffix+":fullbook/datastreams/HTML_FULL/content"
+		$.ajax({
+			url: wordAnalysisURL,
+			dataType: "json",
+			success: successCall,
+			error: errorCall		
+		});
+
+		function successCall(response){		
+			console.log("Concordance response: ",response);			
+			// push concordances				
+			var word = response.textAnalysis.concordance.word;
+			$("#concordance_results").append("<li><ul class='conc_list' id='conc_"+word+"'></ul></li>")
+			$("#conc_"+word).append("<li><strong>Instances of \""+word+"\":</strong></li>")
+			for (var i=0; i<response.textAnalysis.concordance.conc_list.length; i++)	{
+				var blurb = response.textAnalysis.concordance.conc_list[i]
+				blurb = blurb.replace(word,("<span class='hl'>"+word+"</span>"));			
+				$("#conc_"+word).append("<li>..."+blurb+"...</li>")
+			}	
+		}
+		function errorCall(response){
+			console.log(response);
+		}
+		///////////////////////////////////////////////////////////////////////////////////////////	
 	}
-	function errorCall(response){
-		console.log(response);
-	}
-
-
 }
 
 function fireLoaders(){
@@ -524,15 +710,21 @@ function fontResize(delta){
     font_tags.each(function () {  //each tag is"this"      
 	    var font_handle = $(this); //removed children, as it is "this"            
 	    var fsize = font_handle[0].style.fontSize;        
-	    var fsize_index = conv_array.indexOf(fsize);        
+	    var fsize_index = conv_array.indexOf(fsize);
 	    if (delta == "increase"){
 	        fsize_index += 1;
-	        font_handle.css('font-size', conv_array[fsize_index])
+	        userCook.fontPrefIndex = fsize_index;
+	        font_handle.css('font-size', conv_array[fsize_index]);
 	    }
 	    if (delta == "decrease"){
 	        fsize_index -= 1;
-	        font_handle.css('font-size', conv_array[fsize_index])
+	        userCook.fontPrefIndex = fsize_index;
+	        font_handle.css('font-size', conv_array[fsize_index]);
 	    }                
+	    if (delta == "pageload"){
+	    	var fontPrefIndex = userCook.fontPrefIndex;	    	
+	    	font_handle.css('font-size', conv_array[fontPrefIndex]);
+	    }
     });
 }
 

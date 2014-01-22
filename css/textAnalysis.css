@@ -1,23 +1,13 @@
 html, body{
   height:100%;
   /*font-family: Trebuchet MS, Tahoma, Verdana, Arial, sans-serif;*/
-  font-family: Cambria, Arial, sans-serif;
+  font-family: Arial, sans-serif;
   /*font-size: small;*/
   margin:0px;
 }
 
-/*notes
-
-if smaller than
-  - hide unique words table, show graph only
-  - hide sidebar?
-
-*/
-
-
-
 #page-content-wrapper{
-  width:90%;
+  /*width:90%;*/
   max-width:2000px;
   float:center;
   margin:auto auto auto 170px;
@@ -68,7 +58,8 @@ if smaller than
 
 #right_pane_header {
   width:45%;
-  float:left;  
+  float:right;
+  padding-top:5px;  
 }
 
 /*Sidebar*/
@@ -77,9 +68,8 @@ if smaller than
   width:150px;
   /*float:left;*/
   margin:auto;
-  background-color:black;
-  color:#999999;
-  margin-right:10px;
+  background-color:rgb(53,53,53);
+  color:#999999;  
   padding:10px;
   position:fixed;
 }
@@ -100,6 +90,10 @@ if smaller than
   margin-right:5px;
 }
 
+#page_thumbs li{
+  margin-bottom:5px;
+}
+
 #analysis_layer{
   display:none;
 }
@@ -110,9 +104,9 @@ if smaller than
 
 .content-header{
   margin:auto auto auto 170px;
-  background-color:black;
+  background-color:rgb(53,53,53);
   color:#999999;
-  height:30px;
+  height:10px;
 }
 
 .content-header a{
@@ -167,9 +161,64 @@ if smaller than
 }
 
 #concordance_results{
-  max-height:300px;
+  /*max-height:300px;*/
   overflow-y:scroll;
 }
+
+.conc_list{
+  margin-bottom:10px;
+}
+
+#logo{
+  text-align:center;
+}
+
+#logo img{
+  margin-bottom:-15px;
+}
+
+#menu ul{
+  list-style:none;  
+}
+
+#menu a{
+  color:#D1D1D1;  
+  text-decoration:none;
+}
+
+#stringSearch_lineGraph {
+  overflow-x:scroll;
+  max-width:500px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

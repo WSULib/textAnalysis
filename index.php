@@ -2,9 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="">
-    <meta name="author" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">    
 
     <title>TextSuite - Wayne State</title>
     <!-- jQuery must be included before Annotator -->
@@ -24,7 +22,10 @@
     <link href="css/textAnalysis.css" rel="stylesheet">    
 
     <!--JS loads-->          
-    <script src="js/textAnalysis.js"></script>      
+    <script src="js/textAnalysis.js"></script>     
+
+    <!-- cookies -->
+    <script src="inc/jquery.cookie.js" type="text/javascript"></script> 
 
      
 
@@ -37,20 +38,30 @@
     <div id="wrapper">
       
       <!-- Sidebar -->
-      <div id="sidebar">
-        <h3>Wayne State University Libraries - textSuite</h3>
+      <div id="sidebar">        
+        <div id="logo">
+          <img src="http://scholarscooperative.wayne.edu/img/ls_logo.png"/>
+          <p>Wayne State University Libraries</p>
+        </div>
+        <div id="menu">
+          <ul>
+            <li><a href="#" onclick="fireAnno(); return false;">annotation</a></li>
+            <li><a href="#" onclick="fireAnalysis(); return false;">analysis</a></li>
+            <li><a href="https://docs.google.com/document/d/1MwGoXZavQFukII83Pe5ku4xIzZD6tv6-FKxChhQXn_I/edit?usp=sharing" target="_blank">dev_notes</a></li>
+          </ul>
+        </div>
         <ul id="page_thumbs"></ul>
       </div>
 
       <div class="content-header">          
-          <div class="row">           
-            <div id="left_pane_header">
-              <a href="#" onclick="fireAnno(); return false;">annotation</a>
-              <a href="#" onclick="fireAnalysis(); return false;">analysis</a>              
-              <a href="https://docs.google.com/document/d/1MwGoXZavQFukII83Pe5ku4xIzZD6tv6-FKxChhQXn_I/edit?usp=sharing" target="_blank">dev_notes</a>
-            </div>            
-          </div>            
-        </div>
+        <div class="row">           
+          <!-- <div id="left_pane_header">
+            <a href="#" onclick="fireAnno(); return false;">annotation</a>
+            <a href="#" onclick="fireAnalysis(); return false;">analysis</a>              
+            <a href="https://docs.google.com/document/d/1MwGoXZavQFukII83Pe5ku4xIzZD6tv6-FKxChhQXn_I/edit?usp=sharing" target="_blank">dev_notes</a>
+          </div> -->            
+        </div>            
+      </div>
           
       <!-- Page content -->
       <div id="page-content-wrapper">        
