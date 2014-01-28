@@ -7,6 +7,9 @@ Charts.Options = new Object();
 // set cookie
 var userCook = new Object();
 
+// temp users for this class
+var classUsers = ["ay4047","ea5386","dw3821","el5498","av8259","ef0791","fi1806","ej2929","ez9133","ad5820","ef1885","dp5745","ef3048","eh2889","dz3816","ey4748","ei5545","es2260","eb0594","ci3917"];
+
 // on page launch
 function launch(PID, pagenum){
 
@@ -32,15 +35,11 @@ function launch(PID, pagenum){
 	   		$("#page_thumbs").append("<li>Page "+(i+1)+" <img onclick='updatePage("+(i+1)+"); return false;' src='http://silo.lib.wayne.edu/fedora/objects/"+PIDsuffix+":thumbs/datastreams/THUMB_"+(i+1)+"/content'/></li>");
 	   	}
 
-	   	// //set nav pages
+	   	// set nav pages
 		setNav();
-
 	   }
 	   
-	});	
-
-	// initialize text	
-	insertTextAnnotate('launch');
+	});		
 
 	// initialize page image
 	insertImage(1);
@@ -48,16 +47,34 @@ function launch(PID, pagenum){
 	// resize page thumbs
 	resizePageThumbs();
 
-	//update page number	
+	// update page number	
 	$("#cpage").html("Page "+pagenum);	
 
-	// RUN FULLTEXT ANALYSIS IN BACKGROUND
-	// run collocations
-	fulltextAnalysis();
+	// set links
+	$("#eReader_link").attr('href','http://silo.lib.wayne.edu/eTextReader/eTextReader.php?ItemID='+textMeta.PID+'#page/1/mode/2up')
 	
-	userCook.username = "horseface";
-	userCook.fontPrefIndex = 5;
-	
+	// user work
+	getUserInfo();	
+}
+
+function getUserInfo(){
+	$(document).ready(function(){
+		console.log("Checking WSUDOR cookie");
+		if (typeof $.cookie("WSUDOR") != 'undefined'){
+			WSUDORcookie = $.parseJSON($.cookie("WSUDOR"));
+			console.log(WSUDORcookie);
+
+			userCook.username = WSUDORcookie.username_WSUDOR;
+			userCook.displayName = WSUDORcookie.displayName;
+			userCook.fontPrefIndex = 4;
+
+			// set user prefs
+			$("#username span").html(userCook.displayName);
+
+			// initialize annotation text	
+			insertTextAnnotate('launch');
+		}
+	});
 }
 
 function updatePage(pagenum){
@@ -74,14 +91,24 @@ function updatePage(pagenum){
 	//update page number
 	$("#cpage").html("Page "+pagenum);
 
+	// update eReader link
+	$("#eReader_link").attr('href','http://silo.lib.wayne.edu/eTextReader/eTextReader.php?ItemID='+textMeta.PID+'#page/'+pagenum+'/mode/1up')
+
 	// set nav pages
 	setNav();
 	
 }
 
 function annoLaunch(pagenum,type){
-	// construct URI
+	
+	// // construct URI
+	// var uri = textMeta.PIDsuffix+"_"+pagenum;	
+
+	// construct URI - unique identifier for particular student
+	// var uri = userCook.username+"_"+textMeta.PIDsuffix+"_"+pagenum;	
 	var uri = textMeta.PIDsuffix+"_"+pagenum;	
+
+	var readersArray
 
 	if (type == 'launch'){
 		jQuery(function ($) {	    
@@ -96,6 +123,18 @@ function annoLaunch(pagenum,type){
 			        'uri': uri
 				}
 		    });
+		    $('#image_text .right_pane').annotator('addPlugin', 'Permissions', {
+			  user:userCook.username,
+			   permissions: {
+			    'read':   [userCook.username],
+			    'update': [userCook.username],
+			    'delete': [userCook.username],
+			    'admin':  [userCook.username]
+			  }		    
+			});	  
+			$('#image_text .right_pane').annotator('addPlugin', 'Auth', {
+			  tokenUrl: "http://silo.lib.wayne.edu/annotations/authToken"		  
+			}); 			 
 		});	
 	}
 
@@ -153,9 +192,6 @@ function fireAnno(){
 function fireAnalysis(){	
 	$("#annotation_layer").hide();
 	$("#analysis_layer").fadeIn();
-	
-
-	// load analysis template
 }
 
 
@@ -163,53 +199,17 @@ function fireAnalysis(){
 // Text Analysis
 //////////////////////////////////////////////////////////////////////
 
-// OLD VERSION, WORKING
-// function stringSearch(){
-
-// 	analysisBlob.search_string = $("#search_string").val();
-// 	var search_terms = analysisBlob.search_string.split(",");	
-// 	console.log("Search terms",search_terms);
-
-
-// 	// iterate through search terms, seperated by commas from input form
-// 	for (var i=0; i<search_terms.length; i++){
-// 		var solrParams = new Object();
-// 		solrParams.q = search_terms[i];
-// 		solrParams['fq[]'] = [
-// 			"ItemID:"+textMeta.structMeta.XMLtoJSON.ebook_item.item_ID
-// 			];
-// 		solrParams.rows = 1000;
-// 		solrParams.sort = "page_num asc";
-// 		solrParams.hl = "true";
-// 		solrParams['hl.fl'] = "OCR_text";
-// 		solrParams['hl.snippets'] = 1000;
-// 		solrParams['hl.fragmenter'] = 'gap';
-// 		solrParams['hl.fragsize'] = 70;
-
-// 		//pass solr parameters os stringify-ed JSON, accepted by Python API as dicitonary
-// 		solrParamsString = JSON.stringify(solrParams);	
-// 		// Calls API functions	
-// 		var APIcallURL = "http://silo.lib.wayne.edu/WSUAPI?functions[]=eTextSearch&solrParams="+solrParamsString;
-
-// 		$.ajax({          
-// 		  url: APIcallURL,      
-// 		  dataType: 'json',	  	    
-// 		  success: callSuccess,
-// 		  error: callError
-// 		});
-
-// 		function callSuccess(response){		
-// 			analysisBlob.stringSearch = response.eTextSearch;
-// 			paintWordFreq_Update();
-// 			wordAnalysis();		
-// 		}
-// 		function callError(response){
-// 			console.log(response);
-// 		}	
-// 	}
-// }
-
 function stringSearch(){
+
+	toggleLoader();	
+
+	// empty previous
+	// hide graph
+	$("#stringSearch_results").css('display','none');
+	// text results
+	$("#concordance_results").empty();	
+	$("#synsets").empty();	
+
 
 	analysisBlob.search_string = $("#search_string").val();
 	var search_terms = analysisBlob.search_string.split(",");	
@@ -302,7 +302,7 @@ function paintWordFreq(){
 		  fontName: 'Arial',
 		  height: 500,
 		  width: 500,		  
-		  chartArea: {'width': '90%', 'height': '60%', top: '60', left: '90'},
+		  // chartArea: {'width': '90%', 'height': '50%', left: '50'},
 		  legend:'bottom'
 		  // curveType: 'function'
 		};
@@ -312,57 +312,8 @@ function paintWordFreq(){
 	}
 }
 
-// OLD, WORKING VERSION
-// function paintWordFreq_Update(){
-// 	// hide
-// 	$("#stringSearch_results").css('display','none');
-
-// 	// Initiate data table    
-// 	var data = new google.visualization.DataTable();
-// 	// Set columns
-// 	data.addColumn('number','page');
-// 	data.addColumn('number','count');
-
-// 	// create object to push to data
-// 	var JSONobject = [];
-
-// 	// create data points for each page
-// 	for (var i=0; i < textMeta.structMeta.XMLtoJSON.ebook_item.dimensions.leafs; i++) {
-// 		// page name - textMeta.structMeta.XMLtoJSON.ebook_item.item_ID + i
-// 		var dataRow = new Object();
-// 		// dataRow['page'] = textMeta.structMeta.XMLtoJSON.ebook_item.item_ID+"_OCR_HTML_"+(i+1);
-// 		dataRow['page'] = (i+1);
-// 		dataRow['count'] = 0;
-// 		JSONobject.push(dataRow);
-// 	}
-
-// 	console.log("Pre highlights addition:",JSONobject);	
-	
-// 	// iterate through highlights, push to JSONobject that has all pages from text
-// 	var snippet_keys = Object.keys(analysisBlob.stringSearch.highlighting);
-// 	snippet_keys.alphanumSort();
-// 	for (var i = 0; i < snippet_keys.length; i++) {
-// 		var pageSnippets = analysisBlob.stringSearch.highlighting[snippet_keys[i]];
-// 		var pageNum = snippet_keys[i].split("_OCR_HTML_")[1];
-// 		JSONobject[(pageNum - 1)]['count'] = pageSnippets.OCR_text.length;	
-// 	}
-
-// 	console.log("After insertions",JSONobject);
-	 
-// 	// Add rows to data object
-// 	for (var i=0; i<JSONobject.length; i++){
-// 	  data.addRow([ 
-// 	    JSONobject[i]['page'],JSONobject[i]['count']
-//       ]);
-// 	}
-
-// 	Charts.Handles.stringSearch_lineGraph.draw(data, Charts.Options.stringSearch_lineGraph);
-// 	$("#stringSearch_results").fadeIn();
-// }
-
 function paintWordFreq_Update(){
-	// hide
-	$("#stringSearch_results").css('display','none');
+	
 
 	// Initiate data table    
 	var data = new google.visualization.DataTable();
@@ -429,59 +380,18 @@ function paintWordFreq_Update(){
 	data.addRows(all_rows);
 
 	Charts.Handles.stringSearch_lineGraph.draw(data, Charts.Options.stringSearch_lineGraph);
+	toggleLoader();
 	$("#stringSearch_results").fadeIn();
+
 }
 
-// OLD, BASICALLY WORKING VERSION (just need to strip for each loop)
-// // concordance
-// function wordAnalysis(){
-// 	fireLoaders();
-
-// 	// for each search term, push concordance results to a list
-// 	for (var i=0; i<analysisBlob.search_terms.length; i++){
-// 		var search_term = analysisBlob.search_terms[i];
-// 		///////////////////////////////////////////////////////////////////////////////////////////
-// 		var wordAnalysisURL = "http://silo.lib.wayne.edu/WSUAPI-dev/projects/textAnalysis?id="+textMeta.PIDsuffix+"&type=wordAnalysis&word="+analysisBlob.search_string+"&text_location=http://silo.lib.wayne.edu/fedora/objects/"+textMeta.PIDsuffix+":fullbook/datastreams/HTML_FULL/content"
-// 		$.ajax({
-// 			url: wordAnalysisURL,
-// 			dataType: "json",
-// 			success: successCall,
-// 			error: errorCall		
-// 		});
-
-// 		function successCall(response){
-// 			console.log("word analysis:",response);
-// 			analysisBlob.wordAnalysis = response;
-
-// 			// push concordances
-// 			$("#concordance_results").empty();
-// 			for (var i=0; i<analysisBlob.wordAnalysis.textAnalysis.concordance.length; i++)	{
-// 				var blurb = analysisBlob.wordAnalysis.textAnalysis.concordance[i]
-// 				blurb = blurb.replace(analysisBlob.search_string,("<span class='hl'>"+analysisBlob.search_string+"</span>"));			
-// 				$("#concordance_results").append("<li>..."+blurb+"...</li>")
-// 			}	
-// 		}
-// 		function errorCall(response){
-// 			console.log(response);
-// 		}
-// 		///////////////////////////////////////////////////////////////////////////////////////////	
-// 	}
-// }
-
 // concordance
-function wordAnalysis(){
-	fireLoaders();
-
-	console.log('running word analysis...');
-
-	// empty previous results...
-	$("#concordance_results").empty();	
+function wordAnalysis(){	
 
 	// for each search term, push concordance results to a list
 	for (var i=0; i<analysisBlob.search_terms.length; i++){
 
 		var search_term = $.trim(analysisBlob.search_terms[i]);
-		///////////////////////////////////////////////////////////////////////////////////////////
 		var wordAnalysisURL = "http://silo.lib.wayne.edu/WSUAPI-dev/projects/textAnalysis?id="+textMeta.PIDsuffix+"&type=wordAnalysis&word="+search_term+"&text_location=http://silo.lib.wayne.edu/fedora/objects/"+textMeta.PIDsuffix+":fullbook/datastreams/HTML_FULL/content"
 		$.ajax({
 			url: wordAnalysisURL,
@@ -491,8 +401,17 @@ function wordAnalysis(){
 		});
 
 		function successCall(response){		
-			console.log("Concordance response: ",response);			
-			// push concordances				
+			console.log("Word Analysis reponse: ",response);			
+			pushConcs(response);		
+			pushSynsets(response);	
+		}
+
+		function errorCall(response){
+			console.log(response);
+		}
+
+		// push concordances	
+		function pushConcs(response){
 			var word = response.textAnalysis.concordance.word;
 			$("#concordance_results").append("<li><ul class='conc_list' id='conc_"+word+"'></ul></li>")
 			$("#conc_"+word).append("<li><strong>Instances of \""+word+"\":</strong></li>")
@@ -500,17 +419,29 @@ function wordAnalysis(){
 				var blurb = response.textAnalysis.concordance.conc_list[i]
 				blurb = blurb.replace(word,("<span class='hl'>"+word+"</span>"));			
 				$("#conc_"+word).append("<li>..."+blurb+"...</li>")
-			}	
+			}
 		}
-		function errorCall(response){
-			console.log(response);
+
+		// push synsets
+		function pushSynsets(response){
+			var word = response.textAnalysis.concordance.word;
+			$("#synsets").append("<li><ul class='syn_list' id='syns_"+word+"'></ul></li>")
+			$("#syns_"+word).append("<li><strong>Synonyms for \""+word+"\":</strong></li>")
+			for (var i=0; i<response.textAnalysis.synsets.length; i++)	{
+				var syn = response.textAnalysis.synsets[i]				
+				$("#syns_"+word).append("<li>"+syn+"</li>")
+			}
 		}
-		///////////////////////////////////////////////////////////////////////////////////////////	
 	}
 }
 
-function fireLoaders(){
-	$("#concordance_results").append('<img src="img/loader.gif"/>');
+
+
+
+
+
+function toggleLoader(){
+	$("#word_analysis_loader").toggle();
 }
 
 
@@ -555,6 +486,7 @@ function fulltextAnalysis(){
 		for (var i=0; i<simple_metrics.uniqueWordsList.length; i++)	{
 			$("#unique_words table").append("<tr><td>"+simple_metrics.uniqueWordsList[i].text+"</td><td>"+simple_metrics.uniqueWordsList[i].count+"</td></tr>");
 		}
+
 		uniqueWordCounts_update();
 
 	}
@@ -602,8 +534,11 @@ function uniqueWordCounts(){
 		  // curveType: 'function'
 		};
 
-		Charts.Handles.uniqueWordCounts = new google.visualization.LineChart(document.getElementById('uniqueWordCounts'));
+		Charts.Handles.uniqueWordCounts = new google.visualization.BarChart(document.getElementById('uniqueWordCounts'));
 		Charts.Handles.uniqueWordCounts.draw(data, Charts.Options.uniqueWordCounts);
+
+		// fires rest of fulltext analysis
+		fulltextAnalysis();
 	}
 }
 
@@ -657,7 +592,7 @@ function resizePageImage(){
 
 function resizePageThumbs(){
 	$("#page_thumbs").css({
-    	'height':($(window).height() - 100)
+    	'height':($(window).height() - 250)
     });
 }
 
@@ -748,7 +683,14 @@ function setNav(){
 	$("#next_page").attr('onclick',"updatePage("+next_page+"); return false;");
 }
 	
-
+function logoutUser(){
+	$.removeCookie("WSUDOR",{
+          path:"/"
+        }
+    );
+	// $("#fav_link").remove(); 
+	location.reload();
+}
 
 
 

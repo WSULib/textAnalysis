@@ -1,11 +1,11 @@
 class MockConsumer(object):
-    def __init__(self, key='mockconsumer'):
+    def __init__(self, key='yellowwallpaper'):
         self.key = key
-        self.secret = 'top-secret'
+        self.secret = 'yellowwallpaper'
         self.ttl = 86400
 
 class MockUser(object):
-    def __init__(self, id='alice', consumer=None):
+    def __init__(self, id='', consumer=None):
         self.id = id
         self.consumer = MockConsumer(consumer if consumer is not None else 'mockconsumer')
         self.is_admin = False

@@ -40,14 +40,20 @@
       <!-- Sidebar -->
       <div id="sidebar">        
         <div id="logo">
-          <img src="http://scholarscooperative.wayne.edu/img/ls_logo.png"/>
+          <a href="https://docs.google.com/document/d/1MwGoXZavQFukII83Pe5ku4xIzZD6tv6-FKxChhQXn_I/edit?usp=sharing" target="_blank">
+            <img src="http://scholarscooperative.wayne.edu/img/ls_logo.png"/>
+          </a>
           <p>Wayne State University Libraries</p>
         </div>
         <div id="menu">
+          <ul id="username">
+            <li>Welcome, <span></span>!</li>
+            <li><a href="http://silo.lib.wayne.edu/dev/dc_graham/login.php">(login)</a> / <a href="#" onclick="logoutUser(); return false;">(logout)</a></li>
+          </ul>
           <ul>
-            <li><a href="#" onclick="fireAnno(); return false;">annotation</a></li>
-            <li><a href="#" onclick="fireAnalysis(); return false;">analysis</a></li>
-            <li><a href="https://docs.google.com/document/d/1MwGoXZavQFukII83Pe5ku4xIzZD6tv6-FKxChhQXn_I/edit?usp=sharing" target="_blank">dev_notes</a></li>
+            <li><a href="#" onclick="fireAnno(); return false;">read / annotate</a></li>
+            <li><a href="#" onclick="fireAnalysis(); return false;">analyze</a></li>
+            <li><a id="eReader_link" href="" target="_blank">eReader</a></li>                        
           </ul>
         </div>
         <ul id="page_thumbs"></ul>
@@ -73,7 +79,7 @@
               <div class="left_pane">
                 <h2>Annotations - <span id="cpage"></span></h2>                            
               </div>
-              <div class="right_pane">
+              <div class="right_pane">                
                 <div class="status_tools" id="html_tools">
                   <p>Font size: <span onclick="fontResize('increase'); return false;">increase</span> / <span onclick="fontResize('decrease'); return false;">decrease</span></p>
                 </div>
@@ -99,20 +105,26 @@
             </div>
             <div class="row">
               <div class="left_pane">
-                <h3>Individual Word Analysis</h3>
+                <h3>Individual Word Analysis</h3>                
                 <form onsubmit="stringSearch(); return false;">
                   <label>String to search for:</label>
                   <input id="search_string" type='textbox'/>
                   <input type="submit"/>
-                </form>
+                </form> 
+
                 <div id="stringSearch_results">
                   <div id="stringSearch_lineGraph"><script type="text/javascript">paintWordFreq();</script></div>                                                  
                 </div>
                 <div id="nltk_results">
+                  <p><strong>Synonyms from Wordnet:</strong><p>
+                  <ul id="synsets"></ul>
                   <p><strong>Concordance Instances:</strong><p>
                   <ul id="concordance_results"></ul>
                 </div>
-              </div>
+                <div>
+                  <img id="word_analysis_loader" src="img/loader.gif"/>
+                </div> 
+              </div> <!--left analysis pane-->
               <div class="right_pane">
                 <h3>Text Metrics and Analysis</h3>
                 <img id="metrics_results_loader" src="img/loader.gif"/>

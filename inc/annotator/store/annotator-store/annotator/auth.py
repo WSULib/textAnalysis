@@ -5,7 +5,6 @@ import jwt
 
 DEFAULT_TTL = 86400
 
-
 class Consumer(object):
     def __init__(self, key):
         self.key = key
@@ -69,16 +68,19 @@ class Authenticator(object):
         request -- a Flask Request object
         """
 
-        token = request.headers.get('x-annotator-auth-token')
+        token = request.headers.get('x-annotator-auth-token')      
+        print("Token:",token)  
         if token is None:
             return False
 
         try:
-            unsafe_token = decode_token(token, verify=False)
+            unsafe_token = decode_token(token, verify=True)
         except TokenInvalid:  # catch junk tokens
+            print("unsafe token?")
             return False
 
         key = unsafe_token.get('consumerKey')
+        print("Consumer key:",key)
         if not key:
             return False
 
@@ -91,6 +93,7 @@ class Authenticator(object):
                                 secret=consumer.secret,
                                 ttl=consumer.ttl)
         except TokenInvalid:  # catch inauthentic or expired tokens
+            print("Can't parse")
             return False
 
 
@@ -105,7 +108,7 @@ def encode_token(token, secret):
     return jwt.encode(token, secret)
 
 
-def decode_token(token, secret='', ttl=DEFAULT_TTL, verify=True):
+def decode_token(token, secret='yellowwallpaper', ttl=DEFAULT_TTL, verify=True):
     try:
         token = jwt.decode(str(token), secret, verify=verify)
     except jwt.DecodeError:
@@ -129,7 +132,6 @@ def decode_token(token, secret='', ttl=DEFAULT_TTL, verify=True):
             raise TokenInvalid("token has expired")
 
     return token
-
 
 def _now():
     return datetime.datetime.now(iso8601.iso8601.UTC).replace(microsecond=0)
