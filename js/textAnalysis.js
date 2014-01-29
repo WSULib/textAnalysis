@@ -185,13 +185,13 @@ function insertImage(pagenum){
 // fire Annotations
 function fireAnno(){
 	$("#analysis_layer").hide();
-	$("#annotation_layer").fadeIn();
+	$("#annotation_layer").show();
 }
 
 // fire Analysis
 function fireAnalysis(){	
 	$("#annotation_layer").hide();
-	$("#analysis_layer").fadeIn();
+	$("#analysis_layer").show();
 }
 
 

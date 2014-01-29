@@ -57,17 +57,7 @@
           </ul>
         </div>
         <ul id="page_thumbs"></ul>
-      </div>
-
-      <div class="content-header">          
-        <div class="row">           
-          <!-- <div id="left_pane_header">
-            <a href="#" onclick="fireAnno(); return false;">annotation</a>
-            <a href="#" onclick="fireAnalysis(); return false;">analysis</a>              
-            <a href="https://docs.google.com/document/d/1MwGoXZavQFukII83Pe5ku4xIzZD6tv6-FKxChhQXn_I/edit?usp=sharing" target="_blank">dev_notes</a>
-          </div> -->            
-        </div>            
-      </div>
+      </div>   
           
       <!-- Page content -->
       <div id="page-content-wrapper">        
@@ -75,7 +65,8 @@
         <!-- Keep all page content within the page-content inset div! -->
         <div class="page-content">
           <div id="annotation_layer">
-            <div class="row" id="status_tools">
+
+            <div class="row layer_header" id="status_tools">
               <div class="left_pane">
                 <h2>Annotations - <span id="cpage"></span></h2>                            
               </div>
@@ -88,6 +79,7 @@
                 </div>
               </div>
             </div>
+
             <div class="row" id="image_text">
               <div class="left_pane">
                 <div id="image_container">
@@ -99,10 +91,15 @@
               </div>            
             </div>
           </div>
+
           <div id="analysis_layer">
-            <div class="row">
-              <h2>Textual Analysis</h2>
+            
+            <div class="row layer_header">
+              <div class="left_pane">
+                <h2>Textual Analysis</h2>
+              </div>
             </div>
+
             <div class="row">
               <div class="left_pane">
                 <h3>Individual Word Analysis</h3>                

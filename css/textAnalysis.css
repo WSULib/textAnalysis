@@ -15,14 +15,14 @@ html, body{
   padding: 0px 0px 0px 15px;
 }
 
-.row {
-  width:100%;
-  clear:both;  
-  /*margin-bottom:15px;*/
-}
-
 #page-content{
   width:80%;
+}
+
+.row {
+  clear:both;
+  width:100%;  
+  /*margin-bottom:15px;*/
 }
 
 /*Viewing*/
@@ -102,12 +102,7 @@ html, body{
   height:20px;
 }
 
-.content-header{
-  margin:auto auto auto 170px;
-  background-color:rgb(53,53,53);
-  color:#999999;
-  height:10px;
-}
+
 
 .content-header a{
   color:#999999;
@@ -196,13 +191,22 @@ html, body{
   display:none;
 }
 
+/*headers*/
 
+.layer_header {
+  /*margin:auto auto auto 170px;*/
+  background-color:rgb(53,53,53);
+  color:#999999;
+  height:45px;      
+  margin-left:-15px;  
+  padding-right:15px;
+}
 
-
-
-
-
-
+.layer_header h2{
+  -webkit-margin-before:.5em;  
+  margin-left:15px;  
+  color:#D1D1D1;
+}
 
 
 
