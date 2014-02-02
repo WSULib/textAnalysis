@@ -2,7 +2,7 @@ html, body{
   height:100%;
   /*font-family: Trebuchet MS, Tahoma, Verdana, Arial, sans-serif;*/
   font-family: Arial, sans-serif;
-  /*font-size: small;*/
+  font-size: 90%;
   margin:0px;
 }
 
@@ -10,7 +10,7 @@ html, body{
   /*width:90%;*/
   max-width:2000px;
   float:center;
-  margin:auto auto auto 170px;
+  margin:auto auto auto 195px;
   min-width:767px;
   padding: 0px 0px 0px 15px;
 }
@@ -49,7 +49,6 @@ html, body{
   margin-left:20px;
 }
 
-/*Analysis*/
 .right_pane{
   width:45%;
   float:left;  
@@ -62,11 +61,15 @@ html, body{
   padding-top:5px;  
 }
 
+#solo_pane{
+  float:left;
+  padding-right:10px;
+}
+
 /*Sidebar*/
 #sidebar {  
   height:100%;
-  width:150px;
-  /*float:left;*/
+  width:175px;
   margin:auto;
   background-color:rgb(53,53,53);
   color:#999999;  
@@ -80,9 +83,13 @@ html, body{
 
 #page_thumbs{
   list-style:none;
-  -webkit-padding-start:7px;
+  -webkit-padding-start:0px;
+  -moz-padding-start: 0px;
+  -khtml-padding-start 0px;
+  -o-padding-start 0px;
+  padding-start 0px;
+  padding: 0px;
   overflow-y:auto;
-
 }
 
 #page_thumbs img{
@@ -96,6 +103,10 @@ html, body{
 
 #analysis_layer{
   display:none;
+}
+
+#analysis_layer .right_pane li {
+  margin-bottom:5px;
 }
 
 #cpage{
@@ -137,6 +148,11 @@ html, body{
 
 #metrics_results{
   display:none;
+}
+
+#metrics_results a{
+  text-decoration: none;
+  color:black;
 }
 
 #unique_words table{
@@ -205,14 +221,44 @@ html, body{
 .layer_header h2{
   -webkit-margin-before:.5em;  
   margin-left:15px;  
+  margin-top:10px;
   color:#D1D1D1;
 }
 
+[dir=ltr] .foo {
+   padding-left: 5em;
+}
+[dir=rtl] .foo {
+   padding-right: 2.5em;
+}
 
+#analysis_help table{
+  max-width:1024px;
+  float:center;
+  margin:auto;
+}
 
+#analysis_help table td{
+  padding:8px 20px 8px 8px;
+}
 
+#glossary table{
+  max-width:1024px;
+  float:center;
+  margin:auto;
+}
 
+#glossary table td{
+  padding:8px 20px 8px 8px;
+}
 
+#sidebar hr {
+height: 1px;
+border: 0;
+color: #6F6767;
+background-color: #6F6767;
+width: 100%;
+}
 
 
 

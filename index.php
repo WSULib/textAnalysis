@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">    
 
-    <title>TextSuite - Wayne State</title>
+    <title>textAnalysis - Wayne State</title>
     <!-- jQuery must be included before Annotator -->
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>   
 
@@ -46,17 +46,21 @@
           <p>Wayne State University Libraries</p>
         </div>
         <div id="menu">
+          <hr>
           <ul id="username">
             <li>Welcome, <span></span>!</li>
             <li><a href="http://silo.lib.wayne.edu/dev/dc_graham/login.php">(login)</a> / <a href="#" onclick="logoutUser(); return false;">(logout)</a></li>
           </ul>
+          
           <ul>
-            <li><a href="#" onclick="fireAnno(); return false;">read / annotate</a></li>
-            <li><a href="#" onclick="fireAnalysis(); return false;">analyze</a></li>
+            <li><a href="textAnalysis-help.php" target="_blank" >Help / Instructions</a></li>
+            <li><a href="#" onclick="fireAnno(); return false;">Annotations</a></li>
+            <li><a href="#" onclick="fireAnalysis(); return false;">Analysis</a></li>
             <li><a id="eReader_link" href="" target="_blank">eReader</a></li>                        
           </ul>
         </div>
-        <ul id="page_thumbs"></ul>
+        <hr>
+        <ul dir=ltr id="page_thumbs"></ul>
       </div>   
           
       <!-- Page content -->
@@ -83,7 +87,9 @@
             <div class="row" id="image_text">
               <div class="left_pane">
                 <div id="image_container">
-                  <img src=""/>
+                  <a target="_blank" href="">
+                    <img src=""/>
+                  </a>
                 </div>
               </div>
               <div class="right_pane">                
@@ -123,24 +129,25 @@
                 </div> 
               </div> <!--left analysis pane-->
               <div class="right_pane">
-                <h3>Text Metrics and Analysis</h3>
+                <h3>Full-Text Metrics and Statistics</h3>
+                <p>(click any metric for brief description)</p>
                 <img id="metrics_results_loader" src="img/loader.gif"/>
                 <div id="metrics_results">
                   <ul>
-                    <li><strong>Total Word Count: </strong><span id="totalWordCount"></span></li>
-                    <li><strong>Total Word Count (sans English stopwords): </strong><span id="totalWordCount_sans_stopwords"></span></li>
-                    <li><strong>Unique Word Count: </strong><span id="uniqueWords"></span></li>
-                    <li><strong>Lexical Density (Total Words Count / Unique Word Count): </strong><span id="lexicalDiversity"></span><li>
-                    <li><strong>Lexical Density (sans English stopwords): </strong><span id="lexicalDiversity_sans_stopwords"></span></li>
-                    <li><strong>Total Sentences: </strong><span id="totalSentences"></span></li>
-                    <li><strong>Longest Sentence: </strong><span id="longestSentence"></span></li>
-                    <li><strong>Shortest Sentence: </strong><span id="shortestSentence"></span></li>
-                    <li><strong>Average Sentence Length: </strong><span id="avgSentenceLength"></span></li>                  
+                    <li><strong><a target="_blank" href="textAnalysis-help.php#totalWordCount">Total Word Count</a>: </strong><span id="totalWordCount"></span></li>
+                    <li><strong><a target="_blank" href="textAnalysis-help.php#totalWordCount_sans_stopwords">Total Word Count (sans English stopwords)</a>: </strong><span id="totalWordCount_sans_stopwords"></span></li>
+                    <li><strong><a target="_blank" href="textAnalysis-help.php#uniqueWords">Unique Word Coun</a>t: </strong><span id="uniqueWords"></span></li>
+                    <li><strong><a target="_blank" href="textAnalysis-help.php#lexicalDensity">Lexical Density</a>: </strong><span id="lexicalDiversity"></span><li>
+                    <li><strong><a target="_blank" href="textAnalysis-help.php#lexicalDensity_sans_stopwords">Lexical Density (sans English stopwords)</a>: </strong><span id="lexicalDiversity_sans_stopwords"></span></li>
+                    <li><strong><a target="_blank" href="textAnalysis-help.php#totalSentences">Total Sentences</a>: </strong><span id="totalSentences"></span></li>
+                    <li><strong><a target="_blank" href="textAnalysis-help.php#longestSentence">Longest Sentence</a>: </strong><span id="longestSentence"></span></li>
+                    <li><strong><a target="_blank" href="textAnalysis-help.php#shortestSentence">Shortest Sentence</a>: </strong><span id="shortestSentence"></span></li>
+                    <li><strong><a target="_blank" href="textAnalysis-help.php#avgSentenceLength">Average Sentence Length</a>: </strong><span id="avgSentenceLength"></span></li>                  
                   </ul>
                   <!--collocations-->
                   <div id="text_collocations">
                     <ul>
-                      <li><strong>Collocations:</strong></li>
+                      <li><strong><a target="_blank" href="textAnalysis-help.php#collocations">Collocations</a>:</strong></li>
                       <li>
                         <ul>
                           <li><div id="text_collocations_results"></div></li>
@@ -151,7 +158,7 @@
                   <!-- frequent, long words-->
                   <div id="freq_long_words">
                     <ul>
-                      <li><strong>Frequent Words: length > 5, frequency > ?</strong></li>
+                      <li><strong><a target="_blank" href="textAnalysis-help.php#freqLongWords">Frequent "Long" Words</a>:</strong></li>
                       <li>
                         <ul>
                           <li><span></li>
@@ -162,7 +169,7 @@
                   <!-- unique words-->
                   <div id="unique_words">
                     <ul>
-                      <li><strong>Unique Words:</strong></li>
+                      <li><strong><a target="_blank" href="textAnalysis-help.php#mostFreqWords">Most Frequent Words</a>:</strong></li>
                       <li>
                         <ul>
                           <li>

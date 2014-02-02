@@ -178,6 +178,7 @@ function insertTextAnnotate(pagenum){
 
 // swap out image
 function insertImage(pagenum){
+	$("#image_container a").attr('href','http://silo.lib.wayne.edu/fedora/objects/'+textMeta.PIDsuffix+':images/datastreams/IMAGE_'+pagenum+'/content');
 	$("#image_container img").attr('src','http://silo.lib.wayne.edu/fedora/objects/'+textMeta.PIDsuffix+':images/datastreams/IMAGE_'+pagenum+'/content');
 	resizePageImage();	
 }
@@ -193,7 +194,6 @@ function fireAnalysis(){
 	$("#annotation_layer").hide();
 	$("#analysis_layer").show();
 }
-
 
 
 // Text Analysis
@@ -470,8 +470,10 @@ function fulltextAnalysis(){
 		$("#totalWordCount").html(simple_metrics.totalWordCount);
 		$("#totalWordCount_sans_stopwords").html(simple_metrics.totalWordCount_sans_stopwords);
 		$("#uniqueWords").html(simple_metrics.uniqueWords);
+		// should be lexicalDensity, not lexicalDiversity
 		$("#lexicalDiversity").html(simple_metrics.lexicalDiversity);
 		$("#lexicalDiversity_sans_stopwords").html(simple_metrics.lexicalDiversity_sans_stopwords);
+		//
 		$("#totalSentences").html(simple_metrics.totalSentences);
 		$("#longestSentence").html("<ul><li><strong>Word Count:</strong> "+simple_metrics.longestSentence.length+"</li><li>"+simple_metrics.longestSentence.text+"</li></ul>");
 		$("#shortestSentence").html("<ul><li><strong>Word Count:</strong> "+simple_metrics.shortestSentence.length+"</li><li>"+simple_metrics.shortestSentence.text+"</li></ul>");
