@@ -243,13 +243,6 @@ function stringSearch(){
 		// Calls API functions	
 		var APIcallURL = "http://silo.lib.wayne.edu/WSUAPI?functions[]=eTextSearch&solrParams="+solrParamsString;
 
-		$.ajax({          
-		  url: APIcallURL,      
-		  dataType: 'json',	  	    
-		  success: callSuccess,
-		  error: callError
-		});
-
 		function callSuccess(response){
 			analysisBlob.stringSearches.push(response.eTextSearch);
 			search_count++;
@@ -263,6 +256,15 @@ function stringSearch(){
 		function callError(response){
 			console.log(response);
 		}
+
+		$.ajax({          
+		  url: APIcallURL,      
+		  dataType: 'json',	  	    
+		  success: callSuccess,
+		  error: callError
+		});
+
+		
 	}
 }
 
@@ -393,23 +395,6 @@ function wordAnalysis(){
 
 		var search_term = $.trim(analysisBlob.search_terms[i]);
 		var wordAnalysisURL = "http://silo.lib.wayne.edu/WSUAPI-dev/projects/textAnalysis?id="+textMeta.PIDsuffix+"&type=wordAnalysis&word="+search_term+"&text_location=http://silo.lib.wayne.edu/fedora/objects/"+textMeta.PIDsuffix+":fullbook/datastreams/HTML_FULL/content"
-		$.ajax({
-			url: wordAnalysisURL,
-			dataType: "json",
-			success: successCall,
-			error: errorCall		
-		});
-
-		function successCall(response){		
-			console.log("Word Analysis reponse: ",response);			
-			pushConcs(response);		
-			pushSynsets(response);	
-		}
-
-		function errorCall(response){
-			console.log(response);
-		}
-
 		// push concordances	
 		function pushConcs(response){
 			var word = response.textAnalysis.concordance.word;
@@ -432,6 +417,24 @@ function wordAnalysis(){
 				$("#syns_"+word).append("<li>"+syn+"</li>")
 			}
 		}
+		function successCall(response){		
+			console.log("Word Analysis reponse: ",response);			
+			pushConcs(response);		
+			pushSynsets(response);	
+		}
+
+		function errorCall(response){
+			console.log(response);
+		}
+
+		$.ajax({
+			url: wordAnalysisURL,
+			dataType: "json",
+			success: successCall,
+			error: errorCall		
+		});		
+
+		
 	}
 }
 
@@ -449,13 +452,6 @@ function toggleLoader(){
 // fulltextAnalysis
 function fulltextAnalysis(){
 	var analysisURL = "http://silo.lib.wayne.edu/WSUAPI-dev/projects/textAnalysis?id="+textMeta.PIDsuffix+"&type=fullbookAnalysis&text_location=http://silo.lib.wayne.edu/fedora/objects/"+textMeta.PIDsuffix+":fullbook/datastreams/HTML_FULL/content";	
-	$.ajax({
-		url: analysisURL,
-		dataType: "json",
-		success: successCall,
-		error: errorCall		
-	});
-
 	function successCall(response){
 		$("#metrics_results_loader").hide();
 		$("#metrics_results").fadeIn();
@@ -495,6 +491,14 @@ function fulltextAnalysis(){
 	function errorCall(response){
 		console.log(response);
 	}
+	$.ajax({
+		url: analysisURL,
+		dataType: "json",
+		success: successCall,
+		error: errorCall		
+	});
+
+	
 }
 
 // function to create distribution chart of top 15 unique words
