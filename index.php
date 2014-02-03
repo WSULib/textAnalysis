@@ -40,7 +40,7 @@
       <!-- Sidebar -->
       <div id="sidebar">        
         <div id="logo">
-          <a href="https://docs.google.com/document/d/1MwGoXZavQFukII83Pe5ku4xIzZD6tv6-FKxChhQXn_I/edit?usp=sharing" target="_blank">
+          <a href="http://www.lib.wayne.edu">
             <img src="http://scholarscooperative.wayne.edu/img/ls_logo.png"/>
           </a>
           <p>Wayne State University Libraries</p>
@@ -48,15 +48,19 @@
         <div id="menu">
           <hr>
           <ul id="username">
-            <li>Welcome, <span></span>!</li>
-            <li><a href="http://silo.lib.wayne.edu/dev/dc_graham/login.php">(login)</a> / <a href="#" onclick="logoutUser(); return false;">(logout)</a></li>
+            <li id="username_display">Welcome, <span></span>! <a href="#" onclick="logoutUser(); return false;">(logout)</a></li>
+            <li id="login_display"><a href="http://silo.lib.wayne.edu/dev/dc_graham/login.php">Login Here!</a></li>
           </ul>
           
-          <ul>
-            <li><a href="textAnalysis-help.php" target="_blank" >Help / Instructions</a></li>
+          <ul>            
             <li><a href="#" onclick="fireAnno(); return false;">Annotations</a></li>
             <li><a href="#" onclick="fireAnalysis(); return false;">Analysis</a></li>
-            <li><a id="eReader_link" href="" target="_blank">eReader</a></li>                        
+            <li><a id="eReader_link" href="" target="_blank">eReader</a></li>            
+          </ul>
+
+          <ul>
+            <li><a href="textAnalysis-help.php" target="_blank" >Help / Instructions</a></li>
+            <li><a href="#" onclick="toggleMenu(); return false;">Toggle Sidebar</a></li>
           </ul>
         </div>
         <hr>
@@ -72,7 +76,7 @@
 
             <div class="row layer_header" id="status_tools">
               <div class="left_pane">
-                <h2>Annotations - <span id="cpage"></span></h2>                            
+                <h2><span class="toggleMenu_top" onclick="toggleMenu(); return false;">(Toggle Sidebar)</span> Annotations - <span id="cpage"></span></h2>                            
               </div>
               <div class="right_pane">                
                 <div class="status_tools" id="html_tools">
@@ -102,7 +106,7 @@
             
             <div class="row layer_header">
               <div class="left_pane">
-                <h2>Textual Analysis</h2>
+                <h2><span class="toggleMenu_top" onclick="toggleMenu(); return false;">(Toggle Sidebar)</span> Textual Analysis</h2>
               </div>
             </div>
 

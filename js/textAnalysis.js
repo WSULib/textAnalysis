@@ -70,9 +70,14 @@ function getUserInfo(){
 
 			// set user prefs
 			$("#username span").html(userCook.displayName);
+			$("#username_display").show();		
+			$("#login_display").hide();						
 
 			// initialize annotation text	
 			insertTextAnnotate('launch');
+		}		
+		else{
+			$("#login_display").show();
 		}
 	});
 }
@@ -579,6 +584,17 @@ function uniqueWordCounts_update(){
 	Charts.Handles.uniqueWordCounts.draw(data, Charts.Options.uniqueWordCounts);	
 }
 
+function toggleMenu(){
+	$("#sidebar").toggle();
+	$(".toggleMenu_top").toggle();
+	// resize page-wrapper
+	if ($("#sidebar").css('display') == "none"){
+		$("#page-content-wrapper").css('margin-left','0px');
+	}
+	else{
+		$("#page-content-wrapper").css('margin-left','195px');
+	}
+}
 
 
 

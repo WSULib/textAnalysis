@@ -10,7 +10,8 @@ html, body{
   /*width:90%;*/
   max-width:2000px;
   float:center;
-  margin:auto auto auto 195px;
+  /*margin:auto auto auto 195px;*/
+  margin-left:195px;
   min-width:767px;
   padding: 0px 0px 0px 15px;
 }
@@ -47,6 +48,7 @@ html, body{
   width:100%;
   height:100%;
   margin-left:20px;
+  margin-top:20px;
 }
 
 .right_pane{
@@ -260,14 +262,24 @@ background-color: #6F6767;
 width: 100%;
 }
 
+#username_display{
+  display:none;
+  color:pink;
+}
 
+#login_display{
+  display:none;  
+}
 
+#login_display a{
+  color:pink;
+}
 
-
-
-
-
-
+.toggleMenu_top{
+  display:none;
+  color:pink;
+  cursor:pointer;
+}
 
 
 
