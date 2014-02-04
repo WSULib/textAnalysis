@@ -399,7 +399,7 @@ function wordAnalysis(){
 	for (var i=0; i<analysisBlob.search_terms.length; i++){
 
 		var search_term = $.trim(analysisBlob.search_terms[i]);
-		var wordAnalysisURL = "http://silo.lib.wayne.edu/WSUAPI-dev/projects/textAnalysis?id="+textMeta.PIDsuffix+"&type=wordAnalysis&word="+search_term+"&text_location=http://silo.lib.wayne.edu/fedora/objects/"+textMeta.PIDsuffix+":fullbook/datastreams/HTML_FULL/content"
+		var wordAnalysisURL = "http://silo.lib.wayne.edu/WSUAPI/projects/textAnalysis?id="+textMeta.PIDsuffix+"&type=wordAnalysis&word="+search_term+"&text_location=http://silo.lib.wayne.edu/fedora/objects/"+textMeta.PIDsuffix+":fullbook/datastreams/HTML_FULL/content"
 		// push concordances	
 		function pushConcs(response){
 			var word = response.textAnalysis.concordance.word;
@@ -456,7 +456,7 @@ function toggleLoader(){
 
 // fulltextAnalysis
 function fulltextAnalysis(){
-	var analysisURL = "http://silo.lib.wayne.edu/WSUAPI-dev/projects/textAnalysis?id="+textMeta.PIDsuffix+"&type=fullbookAnalysis&text_location=http://silo.lib.wayne.edu/fedora/objects/"+textMeta.PIDsuffix+":fullbook/datastreams/HTML_FULL/content";	
+	var analysisURL = "http://silo.lib.wayne.edu/WSUAPI/projects/textAnalysis?id="+textMeta.PIDsuffix+"&type=fullbookAnalysis&text_location=http://silo.lib.wayne.edu/fedora/objects/"+textMeta.PIDsuffix+":fullbook/datastreams/HTML_FULL/content";	
 	function successCall(response){
 		$("#metrics_results_loader").hide();
 		$("#metrics_results").fadeIn();

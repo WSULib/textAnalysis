@@ -22,7 +22,8 @@
     <link href="css/textAnalysis.css" rel="stylesheet">    
 
     <!--JS loads-->          
-    <script src="js/textAnalysis.js"></script>     
+    <script src="js/textAnalysis.js"></script>
+    <script src="js/userData.js"></script>
 
     <!-- cookies -->
     <script src="inc/jquery.cookie.js" type="text/javascript"></script> 

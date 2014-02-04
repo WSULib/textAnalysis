@@ -63,9 +63,10 @@ html, body{
   padding-top:5px;  
 }
 
-#solo_pane{
+.solo_pane{
   float:left;
-  padding-right:10px;
+  padding-right:25px;
+  padding-bottom:50px;
 }
 
 /*Sidebar*/
