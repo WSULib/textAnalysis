@@ -50,7 +50,7 @@
           <hr>
           <ul id="username">
             <li id="username_display">Welcome, <span></span>! <a href="#" onclick="logoutUser(); return false;">(logout)</a></li>
-            <li id="login_display"><a href="http://silo.lib.wayne.edu/digitalcollections/login.php">Login Here!</a></li>
+            <li id="login_display"><a href="http://digital.library.wayne.edu/digitalcollections/login.php">Login Here!</a></li>
           </ul>
           
           <ul>            

@@ -604,3 +604,142 @@ ImportError: No module named flask
   File "/usr/lib/python2.7/urllib.py", line 1204, in unquote
     res = s.split('%')
 AttributeError: 'NoneType' object has no attribute 'split'
+Traceback (most recent call last):
+  File "/var/www/wsuls/dev/textAnalysis/inc/annotator/store/annotator-store/pyenv/lib/python2.7/site-packages/flask/app.py", line 1701, in __call__
+    return self.wsgi_app(environ, start_response)
+  File "/var/www/wsuls/dev/textAnalysis/inc/annotator/store/annotator-store/pyenv/lib/python2.7/site-packages/flask/app.py", line 1689, in wsgi_app
+    response = self.make_response(self.handle_exception(e))
+  File "/var/www/wsuls/dev/textAnalysis/inc/annotator/store/annotator-store/pyenv/lib/python2.7/site-packages/flask/app.py", line 1687, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/var/www/wsuls/dev/textAnalysis/inc/annotator/store/annotator-store/pyenv/lib/python2.7/site-packages/flask/app.py", line 1360, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/var/www/wsuls/dev/textAnalysis/inc/annotator/store/annotator-store/pyenv/lib/python2.7/site-packages/flask/app.py", line 1358, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/var/www/wsuls/dev/textAnalysis/inc/annotator/store/annotator-store/pyenv/lib/python2.7/site-packages/flask/app.py", line 1344, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "/var/www/wsuls/dev/textAnalysis/inc/annotator/store/annotator-store/run.py", line 101, in authToken
+    unescapedWSUDORcoookie = urllib.unquote(WSUDORcookie)
+  File "/usr/lib/python2.7/urllib.py", line 1204, in unquote
+    res = s.split('%')
+AttributeError: 'NoneType' object has no attribute 'split'
+d3YWxscGFwZXIiLCAidXNlcklkIjogIkdyYWhhbSAvIGVqMjkyOSIsICJ0dGwiOiA4NjQwMH0.KNwmIBXDciZhB4W48mT3Hl0k-c5coMZKxow4KW-aSbM')
+('Consumer key:', u'yellowwallpaper')
+('Token:', u'eyJhbGciOiAiSFMyNTYiLCAidHlwIjogIkpXVCJ9.eyJpc3N1ZWRBdCI6ICIyMDE0LTAyLTA0VDIxOjI5OjQxKzAwOjAwWiIsICJjb25zdW1lcktleSI6ICJ5ZWxsb3d3YWxscGFwZXIiLCAidXNlcklkIjogIkdyYWhhbSAvIGVqMjkyOSIsICJ0dGwiOiA4NjQwMH0.KNwmIBXDciZhB4W48mT3Hl0k-c5coMZKxow4KW-aSbM')
+('Consumer key:', u'yellowwallpaper')
+('Token:', u'eyJhbGciOiAiSFMyNTYiLCAidHlwIjogIkpXVCJ9.eyJpc3N1ZWRBdCI6ICIyMDE0LTAyLTA0VDIxOjI2OjMyKzAwOjAwWiIsICJjb25zdW1lcktleSI6ICJ5ZWxsb3d3YWxscGFwZXIiLCAidXNlcklkIjogIkdyYWhhbSAvIGVqMjkyOSIsICJ0dGwiOiA4NjQwMH0.tPwcH3U2wV4xHWNNEFuinCFDPyD8VR7jwh2yn3zS73M')
+('Consumer key:', u'yellowwallpaper')
+('Token:', None)
+('Token:', None)
+('Token:', None)
+('Token:', None)
+('Token:', None)
+('Token:', None)
+('Token:', None)
+('Token:', None)
+('Token:', None)
+('Token:', None)
+('Token:', None)
+('Token:', None)
+('Token:', None)
+('Token:', None)
+('Token:', None)
+('Token:', None)
+('Token:', None)
+('Token:', None)
+('Token:', None)
+('Token:', None)
+('Token:', None)
+('Token:', None)
+('Token:', None)
+('Token:', None)
+('Token:', None)
+('Token:', None)
+('Token:', None)
+('Token:', None)
+('Token:', None)
+('Token:', None)
+('Token:', u'eyJhbGciOiAiSFMyNTYiLCAidHlwIjogIkpXVCJ9.eyJpc3N1ZWRBdCI6ICIyMDE0LTAyLTA1VDE2OjE3OjQyKzAwOjAwWiIsICJjb25zdW1lcktleSI6ICJ5ZWxsb3d3YWxscGFwZXIiLCAidXNlcklkIjogIkVtaWx5IC8gZHczODIxIiwgInR0bCI6IDg2NDAwfQ.jFuH2HlSuhbOdeMtDOa-JVG4PBX4VStX0qdXPAsgoJY')
+('Consumer key:', u'yellowwallpaper')
+('Token:', u'eyJhbGciOiAiSFMyNTYiLCAidHlwIjogIkpXVCJ9.eyJpc3N1ZWRBdCI6ICIyMDE0LTAyLTA1VDE2OjE3OjQyKzAwOjAwWiIsICJjb25zdW1lcktleSI6ICJ5ZWxsb3d3YWxscGFwZXIiLCAidXNlcklkIjogIkVtaWx5IC8gZHczODIxIiwgInR0bCI6IDg2NDAwfQ.jFuH2HlSuhbOdeMtDOa-JVG4PBX4VStX0qdXPAsgoJY')
+('Consumer key:', u'yellowwallpaper')
+('Token:', u'eyJhbGciOiAiSFMyNTYiLCAidHlwIjogIkpXVCJ9.eyJpc3N1ZWRBdCI6ICIyMDE0LTAyLTA1VDE2OjE3OjQyKzAwOjAwWiIsICJjb25zdW1lcktleSI6ICJ5ZWxsb3d3YWxscGFwZXIiLCAidXNlcklkIjogIkVtaWx5IC8gZHczODIxIiwgInR0bCI6IDg2NDAwfQ.jFuH2HlSuhbOdeMtDOa-JVG4PBX4VStX0qdXPAsgoJY')
+('Consumer key:', u'yellowwallpaper')
+('Token:', u'eyJhbGciOiAiSFMyNTYiLCAidHlwIjogIkpXVCJ9.eyJpc3N1ZWRBdCI6ICIyMDE0LTAyLTA1VDE2OjE3OjQyKzAwOjAwWiIsICJjb25zdW1lcktleSI6ICJ5ZWxsb3d3YWxscGFwZXIiLCAidXNlcklkIjogIkVtaWx5IC8gZHczODIxIiwgInR0bCI6IDg2NDAwfQ.jFuH2HlSuhbOdeMtDOa-JVG4PBX4VStX0qdXPAsgoJY')
+('Consumer key:', u'yellowwallpaper')
+('Token:', u'eyJhbGciOiAiSFMyNTYiLCAidHlwIjogIkpXVCJ9.eyJpc3N1ZWRBdCI6ICIyMDE0LTAyLTA1VDE2OjE3OjQyKzAwOjAwWiIsICJjb25zdW1lcktleSI6ICJ5ZWxsb3d3YWxscGFwZXIiLCAidXNlcklkIjogIkVtaWx5IC8gZHczODIxIiwgInR0bCI6IDg2NDAwfQ.jFuH2HlSuhbOdeMtDOa-JVG4PBX4VStX0qdXPAsgoJY')
+('Consumer key:', u'yellowwallpaper')
+('Token:', None)
+('Token:', u'eyJhbGciOiAiSFMyNTYiLCAidHlwIjogIkpXVCJ9.eyJpc3N1ZWRBdCI6ICIyMDE0LTAyLTA1VDIxOjQ4OjQ3KzAwOjAwWiIsICJjb25zdW1lcktleSI6ICJ5ZWxsb3d3YWxscGFwZXIiLCAidXNlcklkIjogIkdyYWhhbSAvIGVqMjkyOSIsICJ0dGwiOiA4NjQwMH0.6Z_E4tM4MYJX4HBkKeRQywnJJkpgwAgIsM_ln7H5Jbw')
+('Consumer key:', u'yellowwallpaper')
+('Token:', u'eyJhbGciOiAiSFMyNTYiLCAidHlwIjogIkpXVCJ9.eyJpc3N1ZWRBdCI6ICIyMDE0LTAyLTA1VDIxOjQ4OjQ3KzAwOjAwWiIsICJjb25zdW1lcktleSI6ICJ5ZWxsb3d3YWxscGFwZXIiLCAidXNlcklkIjogIkdyYWhhbSAvIGVqMjkyOSIsICJ0dGwiOiA4NjQwMH0.6Z_E4tM4MYJX4HBkKeRQywnJJkpgwAgIsM_ln7H5Jbw')
+('Consumer key:', u'yellowwallpaper')
+('Token:', u'eyJhbGciOiAiSFMyNTYiLCAidHlwIjogIkpXVCJ9.eyJpc3N1ZWRBdCI6ICIyMDE0LTAyLTA1VDIxOjQ4OjQ3KzAwOjAwWiIsICJjb25zdW1lcktleSI6ICJ5ZWxsb3d3YWxscGFwZXIiLCAidXNlcklkIjogIkdyYWhhbSAvIGVqMjkyOSIsICJ0dGwiOiA4NjQwMH0.6Z_E4tM4MYJX4HBkKeRQywnJJkpgwAgIsM_ln7H5Jbw')
+('Consumer key:', u'yellowwallpaper')
+('Token:', u'eyJhbGciOiAiSFMyNTYiLCAidHlwIjogIkpXVCJ9.eyJpc3N1ZWRBdCI6ICIyMDE0LTAyLTA1VDIxOjQ4OjQ3KzAwOjAwWiIsICJjb25zdW1lcktleSI6ICJ5ZWxsb3d3YWxscGFwZXIiLCAidXNlcklkIjogIkdyYWhhbSAvIGVqMjkyOSIsICJ0dGwiOiA4NjQwMH0.6Z_E4tM4MYJX4HBkKeRQywnJJkpgwAgIsM_ln7H5Jbw')
+('Consumer key:', u'yellowwallpaper')
+('Token:', u'eyJhbGciOiAiSFMyNTYiLCAidHlwIjogIkpXVCJ9.eyJpc3N1ZWRBdCI6ICIyMDE0LTAyLTA1VDIxOjQ4OjQ3KzAwOjAwWiIsICJjb25zdW1lcktleSI6ICJ5ZWxsUnhandled exception in thread started by <function inner at 0x2fb66e0>
+b3d3YWxscGFwZXIiLCAidXNlcklkIjogIkdyYWhhbSAvIGVqMjkyOSIsICJ0dGwiOiA4NjQwMH0.6Z_E4tM4MYJX4HBkKeRQywnJJkpgwAgIsM_ln7H5Jbw')
+('Consumer key:', u'yellowwallpaper')
+('Token:', u'eyJhbGciOiAiSFMyNTYiLCAidHlwIjogIkpXVCJ9.eyJpc3N1ZWRBdCI6ICIyMDE0LTAyLTA1VDIxOjQ4OjQ3KzAwOjAwWiIsICJjb25zdW1lcktleSI6ICJ5ZWxsb3d3YWxscGFwZXIiLCAidXNlcklkIjogIkdyYWhhbSAvIGVqMjkyOSIsICJ0dGwiOiA4NjQwMH0.6Z_E4tM4MYJX4HBkKeRQywnJJkpgwAgIsM_ln7H5Jbw')
+('Consumer key:', u'yellowwallpaper')
+('Token:', u'eyJhbGciOiAiSFMyNTYiLCAidHlwIjogIkpXVCJ9.eyJpc3N1ZWRBdCI6ICIyMDE0LTAyLTA1VDIxOjQ4OjQ3KzAwOjAwWiIsICJjb25zdW1lcktleSI6ICJ5ZWxsb3d3YWxscGFwZXIiLCAidXNlcklkIjogIkdyYWhhbSAvIGVqMjkyOSIsICJ0dGwiOiA4NjQwMH0.6Z_E4tM4MYJX4HBkKeRQywnJJkpgwAgIsM_ln7H5Jbw')
+('Consumer key:', u'yellowwallpaper')
+('Token:', u'eyJhbGciOiAiSFMyNTYiLCAidHlwIjogIkpXVCJ9.eyJpc3N1ZWRBdCI6ICIyMDE0LTAyLTA1VDIxOjQ4OjQ3KzAwOjAwWiIsICJjb25zdW1lcktleSI6ICJ5ZWxsb3d3YWxscGFwZXIiLCAidXNlcklkIjogIkdyYWhhbSAvIGVqMjkyOSIsICJ0dGwiOiA4NjQwMH0.6Z_E4tM4MYJX4HBkKeRQywnJJkpgwAgIsM_ln7H5Jbw')
+('Consumer key:', u'yellowwallpaper')
+('Token:', u'eyJhbGciOiAiSFMyNTYiLCAidHlwIjogIkpXVCJ9.eyJpc3N1ZWRBdCI6ICIyMDE0LTAyLTA1VDIxOjQ4OjQ3KzAwOjAwWiIsICJjb25zdW1lcktleSI6ICJ5ZWxsb3d3YWxscGFwZXIiLCAidXNlcklkIjogIkdyYWhhbSAvIGVqMjkyOSIsICJ0dGwiOiA4NjQwMH0.6Z_E4tM4MYJX4HBkKeRQywnJJkpgwAgIsM_ln7H5Jbw')
+('Consumer key:', u'yellowwallpaper')
+('Token:', u'eyJhbGciOiAiSFMyNTYiLCAidHlwIjogIkpXVCJ9.eyJpc3N1ZWRBdCI6ICIyMDE0LTAyLTA1VDIxOjQ4OjQ3KzAwOjAwWiIsICJjb25zdW1lcktleSI6ICJ5ZWxsb3d3YWxscGFwZXIiLCAidXNlcklkIjogIkdyYWhhbSAvIGVqMjkyOSIsICJ0dGwiOiA4NjQwMH0.6Z_E4tM4MYJX4HBkKeRQywnJJkpgwAgIsM_ln7H5Jbw')
+('Consumer key:', u'yellowwallpaper')
+('Token:', u'eyJhbGciOiAiSFMyNTYiLCAidHlwIjogIkpXVCJ9.eyJpc3N1ZWRBdCI6ICIyMDE0LTAyLTA1VDIxOjQ4OjQ3KzAwOjAwWiIsICJjb25zdW1lcktleSI6ICJ5ZWxsb3d3YWxscGFwZXIiLCAidXNlcklkIjogIkdyYWhhbSAvIGVqMjkyOSIsICJ0dGwiOiA4NjQwMH0.6Z_E4tM4MYJX4HBkKeRQywnJJkpgwAgIsM_ln7H5Jbw')
+('Consumer key:', u'yellowwallpaper')
+('Token:', None)
+('Token:', u'eyJhbGciOiAiSFMyNTYiLCAidHlwIjogIkpXVCJ9.eyJpc3N1ZWRBdCI6ICIyMDE0LTAyLTA3VDAxOjI0OjE5KzAwOjAwWiIsICJjb25zdW1lcktleSI6ICJ5ZWxsb3d3YWxscGFwZXIiLCAidXNlcklkIjogIkVsaXNlIC8gZWgyODg5IiwgInR0bCI6IDg2NDAwfQ.jlrUtAnq9KVYEqBGCBT5sdpXgjDe96dBlCf_cKUs7kc')
+('Consumer key:', u'yellowwallpaper')
+('Token:', u'eyJhbGciOiAiSFMyNTYiLCAidHlwIjogIkpXVCJ9.eyJpc3N1ZWRBdCI6ICIyMDE0LTAyLTA3VDAxOjI0OjE5KzAwOjAwWiIsICJjb25zdW1lcktleSI6ICJ5ZWxsb3d3YWxscGFwZXIiLCAidXNlcklkIjogIkVsaXNlIC8gZWgyODg5IiwgInR0bCI6IDg2NDAwfQ.jlrUtAnq9KVYEqBGCBT5sdpXgjDe96dBlCf_cKUs7kc')
+('Consumer key:', u'yellowwallpaper')
+('Token:', u'eyJhbGciOiAiSFMyNTYiLCAidHlwIjogIkpXVCJ9.eyJpc3N1ZWRBdCI6ICIyMDE0LTAyLTA3VDAxOjI0OjE5KzAwOjAwWiIsICJjb25zdW1lcktleSI6ICJ5ZWxsb3d3YWxscGFwZXIiLCAidXNlcklkIjogIkVsaXNlIC8gZWgyODg5IiwgInR0bCI6IDg2NDAwfQ.jlrUtAnq9KVYEqBGCBT5sdpXgjDe96dBlCf_cKUs7kc')
+('Consumer key:', u'yellowwallpaper')
+Traceback (most recent call last):
+  File "/var/www/wsuls/dev/textAnalysis/inc/annotator/store/annotator-store/pyenv/local/lib/python2.7/site-packages/werkzeug/serving.py", line 692, in inner
+    passthrough_errors, ssl_context).serve_forever()
+  File "/var/www/wsuls/dev/textAnalysis/inc/annotator/store/annotator-store/pyenv/local/lib/python2.7/site-packages/werkzeug/serving.py", line 436, in serve_forever
+    HTTPServer.serve_forever(self)
+  File "/usr/lib/python2.7/SocketServer.py", line 225, in serve_forever
+    r, w, e = select.select([self], [], [], poll_interval)
+select.error: (4, 'Interrupted system call')
+Traceback (most recent call last):
+  File "run.py", line 23, in <module>
+    from flask import Flask, g, current_app, request, session
+ImportError: No module named flask
+Traceback (most recent call last):
+  File "run.py", line 24, in <module>
+    from annotator import es, annotation, auth, authz, document, store
+  File "/var/www/wsuls/dev/graham/textAnalysis/inc/annotator/store/annotator-store/annotator/__init__.py", line 1, in <module>
+    from .elasticsearch import ElasticSearch
+  File "/var/www/wsuls/dev/graham/textAnalysis/inc/annotator/store/annotator-store/annotator/elasticsearch.py", line 8, in <module>
+    import pyes
+  File "/usr/local/lib/python2.7/dist-packages/pyes-0.19.1-py2.7.egg/pyes/__init__.py", line 41, in <module>
+    from .djangoutils import *
+  File "/usr/local/lib/python2.7/dist-packages/pyes-0.19.1-py2.7.egg/pyes/djangoutils.py", line 6, in <module>
+    from django.db import models
+  File "/usr/local/lib/python2.7/dist-packages/django/db/models/__init__.py", line 5, in <module>
+    from django.db.models.query import Q
+  File "/usr/local/lib/python2.7/dist-packages/django/db/models/query.py", line 17, in <module>
+    from django.db.models.deletion import Collector
+  File "/usr/local/lib/python2.7/dist-packages/django/db/models/deletion.py", line 4, in <module>
+    from django.db.models import signals, sql
+  File "/usr/local/lib/python2.7/dist-packages/django/db/models/sql/__init__.py", line 4, in <module>
+    from django.db.models.sql.subqueries import *
+  File "/usr/local/lib/python2.7/dist-packages/django/db/models/sql/subqueries.py", line 12, in <module>
+    from django.db.models.sql.query import Query
+  File "/usr/local/lib/python2.7/dist-packages/django/db/models/sql/query.py", line 22, in <module>
+    from django.db.models.sql import aggregates as base_aggregates_module
+  File "/usr/local/lib/python2.7/dist-packages/django/db/models/sql/aggregates.py", line 9, in <module>
+    ordinal_aggregate_field = IntegerField()
+  File "/usr/local/lib/python2.7/dist-packages/django/db/models/fields/__init__.py", line 116, in __init__
+    self.db_tablespace = db_tablespace or settings.DEFAULT_INDEX_TABLESPACE
+  File "/usr/local/lib/python2.7/dist-packages/django/conf/__init__.py", line 54, in __getattr__
+    self._setup(name)
+  File "/usr/local/lib/python2.7/dist-packages/django/conf/__init__.py", line 47, in _setup
+    % (desc, ENVIRONMENT_VARIABLE))
+django.core.exceptions.ImproperlyConfigured: Requested setting DEFAULT_INDEX_TABLESPACE, but settings are not configured. You must either define the environment variable DJANGO_SETTINGS_MODULE or call settings.configure() before accessing settings.

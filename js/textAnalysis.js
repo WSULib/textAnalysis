@@ -22,7 +22,7 @@ function launch(PID, pagenum){
 	textMeta.PIDsuffix = PIDsuffix;
 
 	// get page dimensions
-	var textURL = "http://silo.lib.wayne.edu/WSUAPI?functions[]=XMLtoJSON&url=http://silo.lib.wayne.edu/fedora/objects/"+PID+"/datastreams/STRUCT_META/content";
+	var textURL = "http://digital.library.wayne.edu/WSUAPI?functions[]=XMLtoJSON&url=http://digital.library.wayne.edu/fedora/objects/"+PID+"/datastreams/STRUCT_META/content";
 	$.ajax({
 	   url: textURL,
 	   success: function(response){	    
@@ -32,7 +32,7 @@ function launch(PID, pagenum){
 	   	
 	   	// push page thumbnails to page
 	   	for (var i=0; i<textMeta.structMeta.XMLtoJSON.ebook_item.dimensions.leafs; i++){	   		
-	   		$("#page_thumbs").append("<li>Page "+(i+1)+" <img onclick='updatePage("+(i+1)+"); return false;' src='http://silo.lib.wayne.edu/fedora/objects/"+PIDsuffix+":thumbs/datastreams/THUMB_"+(i+1)+"/content'/></li>");
+	   		$("#page_thumbs").append("<li>Page "+(i+1)+" <img onclick='updatePage("+(i+1)+"); return false;' src='http://digital.library.wayne.edu/fedora/objects/"+PIDsuffix+":thumbs/datastreams/THUMB_"+(i+1)+"/content'/></li>");
 	   	}
 
 	   	// set nav pages
@@ -51,7 +51,7 @@ function launch(PID, pagenum){
 	$("#cpage").html("Page "+pagenum);	
 
 	// set links
-	$("#eReader_link").attr('href','http://silo.lib.wayne.edu/eTextReader/eTextReader.php?ItemID='+textMeta.PID+'#page/1/mode/2up')
+	$("#eReader_link").attr('href','http://digital.library.wayne.edu/eTextReader/eTextReader.php?ItemID='+textMeta.PID+'#page/1/mode/2up')
 	
 	// user work
 	getUserInfo();	
@@ -97,7 +97,7 @@ function updatePage(pagenum){
 	$("#cpage").html("Page "+pagenum);
 
 	// update eReader link
-	$("#eReader_link").attr('href','http://silo.lib.wayne.edu/eTextReader/eTextReader.php?ItemID='+textMeta.PID+'#page/'+pagenum+'/mode/1up')
+	$("#eReader_link").attr('href','http://digital.library.wayne.edu/eTextReader/eTextReader.php?ItemID='+textMeta.PID+'#page/'+pagenum+'/mode/1up')
 
 	// set nav pages
 	setNav();
@@ -119,7 +119,7 @@ function annoLaunch(pagenum,type){
 		jQuery(function ($) {	    
 		    $('#image_text .right_pane').annotator();
 		    $('#image_text .right_pane').annotator('addPlugin', 'Store', {
-		    	prefix: 'http://silo.lib.wayne.edu/annotations',
+		    	prefix: 'http://digital.library.wayne.edu/annotations',
 		    	annotationData: {
 		    		'uri':uri
 	    		},
@@ -138,7 +138,7 @@ function annoLaunch(pagenum,type){
 			  }		    
 			});	  
 			$('#image_text .right_pane').annotator('addPlugin', 'Auth', {
-			  tokenUrl: "http://silo.lib.wayne.edu/annotations/authToken"		  
+			  tokenUrl: "http://digital.library.wayne.edu/annotations/authToken"		  
 			}); 			 
 		});	
 	}
@@ -169,7 +169,7 @@ function insertTextAnnotate(pagenum){
 	else {
 		var type = 'update';
 	}
-	var url = 'http://silo.lib.wayne.edu/fedora/objects/'+textMeta.PIDsuffix+':HTML/datastreams/HTML_'+pagenum+'/content';	
+	var url = 'http://digital.library.wayne.edu/fedora/objects/'+textMeta.PIDsuffix+':HTML/datastreams/HTML_'+pagenum+'/content';	
 	$.ajax({
 	   url: url,
 	   success: function(response){	    
@@ -183,8 +183,8 @@ function insertTextAnnotate(pagenum){
 
 // swap out image
 function insertImage(pagenum){
-	$("#image_container a").attr('href','http://silo.lib.wayne.edu/fedora/objects/'+textMeta.PIDsuffix+':images/datastreams/IMAGE_'+pagenum+'/content');
-	$("#image_container img").attr('src','http://silo.lib.wayne.edu/fedora/objects/'+textMeta.PIDsuffix+':images/datastreams/IMAGE_'+pagenum+'/content');
+	$("#image_container a").attr('href','http://digital.library.wayne.edu/fedora/objects/'+textMeta.PIDsuffix+':images/datastreams/IMAGE_'+pagenum+'/content');
+	$("#image_container img").attr('src','http://digital.library.wayne.edu/fedora/objects/'+textMeta.PIDsuffix+':images/datastreams/IMAGE_'+pagenum+'/content');
 	resizePageImage();	
 }
 
@@ -246,7 +246,7 @@ function stringSearch(){
 		//pass solr parameters os stringify-ed JSON, accepted by Python API as dicitonary
 		solrParamsString = JSON.stringify(solrParams);	
 		// Calls API functions	
-		var APIcallURL = "http://silo.lib.wayne.edu/WSUAPI?functions[]=eTextSearch&solrParams="+solrParamsString;
+		var APIcallURL = "http://digital.library.wayne.edu/WSUAPI?functions[]=eTextSearch&solrParams="+solrParamsString;
 
 		function callSuccess(response){
 			analysisBlob.stringSearches.push(response.eTextSearch);
@@ -399,7 +399,7 @@ function wordAnalysis(){
 	for (var i=0; i<analysisBlob.search_terms.length; i++){
 
 		var search_term = $.trim(analysisBlob.search_terms[i]);
-		var wordAnalysisURL = "http://silo.lib.wayne.edu/WSUAPI/projects/textAnalysis?id="+textMeta.PIDsuffix+"&type=wordAnalysis&word="+search_term+"&text_location=http://silo.lib.wayne.edu/fedora/objects/"+textMeta.PIDsuffix+":fullbook/datastreams/HTML_FULL/content"
+		var wordAnalysisURL = "http://digital.library.wayne.edu/WSUAPI/projects/textAnalysis?id="+textMeta.PIDsuffix+"&type=wordAnalysis&word="+search_term+"&text_location=http://digital.library.wayne.edu/fedora/objects/"+textMeta.PIDsuffix+":fullbook/datastreams/HTML_FULL/content"
 		// push concordances	
 		function pushConcs(response){
 			var word = response.textAnalysis.concordance.word;
@@ -456,7 +456,7 @@ function toggleLoader(){
 
 // fulltextAnalysis
 function fulltextAnalysis(){
-	var analysisURL = "http://silo.lib.wayne.edu/WSUAPI/projects/textAnalysis?id="+textMeta.PIDsuffix+"&type=fullbookAnalysis&text_location=http://silo.lib.wayne.edu/fedora/objects/"+textMeta.PIDsuffix+":fullbook/datastreams/HTML_FULL/content";	
+	var analysisURL = "http://digital.library.wayne.edu/WSUAPI-dev/projects/textAnalysis?id="+textMeta.PIDsuffix+"&type=fullbookAnalysis&text_location=http://digital.library.wayne.edu/fedora/objects/"+textMeta.PIDsuffix+":fullbook/datastreams/HTML_FULL/content";	
 	function successCall(response){
 		$("#metrics_results_loader").hide();
 		$("#metrics_results").fadeIn();
