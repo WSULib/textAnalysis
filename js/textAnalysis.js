@@ -73,7 +73,7 @@ function getUserInfo(){
 			$("#username_display").show();		
 			$("#login_display").hide();						
 
-			// initialize annotation text	
+			// initialize annotation text				
 			insertTextAnnotate('launch');
 		}		
 		else{
