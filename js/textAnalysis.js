@@ -8,7 +8,7 @@ Charts.Options = new Object();
 var userCook = new Object();
 
 // temp users for this class
-var classUsers = ["ay4047","ea5386","dw3821","el5498","av8259","ef0791","fi1806","ej2929","ez9133","ad5820","ef1885","dp5745","ef3048","eh2889","dz3816","ey4748","ei5545","es2260","eb0594","ci3917"];
+var classUsers = [];
 
 // on page launch
 function launch(PID, pagenum){
